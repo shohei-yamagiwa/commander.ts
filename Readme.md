@@ -1,3 +1,7 @@
+# Special thanks
+
+This project is a fork of [commander.js](https://github.com/tj/commander.js). Special thanks to the original authors.
+
 # Commander.js
 
 [![Build Status](https://github.com/tj/commander.js/workflows/build/badge.svg)](https://github.com/tj/commander.js/actions?query=workflow%3A%22build%22)
@@ -9,6 +13,7 @@ The complete solution for [node.js](http://nodejs.org) command-line interfaces.
 
 Read this in other languages: English | [简体中文](./Readme_zh-CN.md)
 
+- [Special thanks](#special-thanks)
 - [Commander.js](#commanderjs)
   - [Installation](#installation)
   - [Quick Start](#quick-start)

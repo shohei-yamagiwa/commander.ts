@@ -5,6 +5,11 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.html).
 
+# Caution
+
+This document is just an archive of the original [commander.js](https://github.com/tj/commander.js)
+It will NOT be updated anymore. 
+
 <!-- markdownlint-disable MD024 -->
 <!-- markdownlint-disable MD004 -->
 
