@@ -8,7 +8,9 @@
     "type": "git",
     "url": "git+https://github.com/shohei-yamagiwa/commander.ts.git"
   },
-  "scripts": {},
+  "scripts": {
+    "test": "vitest"
+  },
   "devDependencies": {
     "@eslint/js": "^9.39.2",
     "@types/node": "^22.7.4",
@@ -19,7 +21,8 @@
     "prettier": "^3.8.1",
     "tsd": "^0.33.0",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.54.0"
+    "typescript-eslint": "^8.54.0",
+    "vitest": "^4.0.18"
   },
   "engines": {
     "node": ">=20"
