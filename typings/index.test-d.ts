@@ -1,5 +1,5 @@
-import * as commander from './index';
-import { expectType } from 'tsd';
+import * as commander from "./index";
+import { expectType } from "tsd";
 
 // We are not just checking return types here, we are also implicitly checking that the expected syntax is allowed.
 
@@ -13,20 +13,20 @@ expectType<commander.Command>(commander.program);
 
 // Check export classes and functions exist
 expectType<commander.Command>(new commander.Command());
-expectType<commander.Command>(new commander.Command('name'));
-expectType<commander.Option>(new commander.Option('-f'));
+expectType<commander.Command>(new commander.Command("name"));
+expectType<commander.Option>(new commander.Option("-f"));
 expectType<commander.CommanderError>(
-  new commander.CommanderError(1, 'code', 'message'),
+  new commander.CommanderError(1, "code", "message"),
 );
 expectType<commander.InvalidArgumentError>(
-  new commander.InvalidArgumentError('message'),
+  new commander.InvalidArgumentError("message"),
 );
 expectType<commander.InvalidArgumentError>(
-  new commander.InvalidOptionArgumentError('message'),
+  new commander.InvalidOptionArgumentError("message"),
 );
 expectType<commander.Command>(commander.createCommand());
-expectType<commander.Option>(commander.createOption('--demo'));
-expectType<commander.Argument>(commander.createArgument('<foo>'));
+expectType<commander.Option>(commander.createOption("--demo"));
+expectType<commander.Argument>(commander.createArgument("<foo>"));
 
 // Command properties
 expectType<string[]>(program.args);
@@ -38,66 +38,66 @@ expectType<readonly commander.Argument[]>(program.registeredArguments);
 expectType<commander.Command | null>(program.parent);
 
 // version
-expectType<commander.Command>(program.version('1.2.3'));
-expectType<commander.Command>(program.version('1.2.3', '-r,--revision'));
+expectType<commander.Command>(program.version("1.2.3"));
+expectType<commander.Command>(program.version("1.2.3", "-r,--revision"));
 expectType<commander.Command>(
-  program.version('1.2.3', '-r,--revision', 'show revision information'),
+  program.version("1.2.3", "-r,--revision", "show revision information"),
 );
 expectType<string | undefined>(program.version());
 
 // command (and CommandOptions)
-expectType<commander.Command>(program.command('action'));
+expectType<commander.Command>(program.command("action"));
 expectType<commander.Command>(
-  program.command('action', { isDefault: true, hidden: true, noHelp: true }),
+  program.command("action", { isDefault: true, hidden: true, noHelp: true }),
 );
-expectType<commander.Command>(program.command('exec', 'exec description'));
+expectType<commander.Command>(program.command("exec", "exec description"));
 expectType<commander.Command>(
-  program.command('exec', 'exec description', {
+  program.command("exec", "exec description", {
     isDefault: true,
     hidden: true,
     noHelp: true,
-    executableFile: 'foo',
+    executableFile: "foo",
   }),
 );
 
 // addCommand
-expectType<commander.Command>(program.addCommand(new commander.Command('abc')));
+expectType<commander.Command>(program.addCommand(new commander.Command("abc")));
 
 // argument
-expectType<commander.Command>(program.argument('<value>'));
-expectType<commander.Command>(program.argument('<value>', 'description'));
+expectType<commander.Command>(program.argument("<value>"));
+expectType<commander.Command>(program.argument("<value>", "description"));
 expectType<commander.Command>(
-  program.argument('[value]', 'description', 'default'),
+  program.argument("[value]", "description", "default"),
 );
 expectType<commander.Command>(
-  program.argument('[value]', 'description', parseFloat),
+  program.argument("[value]", "description", parseFloat),
 );
 expectType<commander.Command>(
-  program.argument('[value]', 'description', parseFloat, 1.23),
+  program.argument("[value]", "description", parseFloat, 1.23),
 );
 
 // arguments
-expectType<commander.Command>(program.arguments('<cmd> [env]'));
+expectType<commander.Command>(program.arguments("<cmd> [env]"));
 
 // addHelpCommand
 expectType<commander.Command>(
-  program.addHelpCommand(new commander.Command('assist')),
+  program.addHelpCommand(new commander.Command("assist")),
 );
 // Deprecated uses
 expectType<commander.Command>(program.addHelpCommand());
 expectType<commander.Command>(program.addHelpCommand(false));
 expectType<commander.Command>(program.addHelpCommand(true));
-expectType<commander.Command>(program.addHelpCommand('assist [cmd]'));
+expectType<commander.Command>(program.addHelpCommand("assist [cmd]"));
 expectType<commander.Command>(
-  program.addHelpCommand('assist [file]', 'display help'),
+  program.addHelpCommand("assist [file]", "display help"),
 );
 
 // helpCommand
 expectType<commander.Command>(program.helpCommand(false));
 expectType<commander.Command>(program.helpCommand(true));
-expectType<commander.Command>(program.helpCommand('assist [cmd]'));
+expectType<commander.Command>(program.helpCommand("assist [cmd]"));
 expectType<commander.Command>(
-  program.helpCommand('assist [file]', 'display help'),
+  program.helpCommand("assist [file]", "display help"),
 );
 
 // exitOverride
@@ -109,7 +109,7 @@ expectType<commander.Command>(
 );
 expectType<commander.Command>(
   program.exitOverride((err): void => {
-    if (err.code !== 'commander.executeSubCommandAsync') {
+    if (err.code !== "commander.executeSubCommandAsync") {
       throw err;
     } else {
       // Async callback from spawn events, not useful to throw.
@@ -118,25 +118,25 @@ expectType<commander.Command>(
 );
 
 // error
-expectType<never>(program.error('Goodbye'));
-expectType<never>(program.error('Goodbye', { code: 'my.error' }));
-expectType<never>(program.error('Goodbye', { exitCode: 2 }));
-expectType<never>(program.error('Goodbye', { code: 'my.error', exitCode: 2 }));
+expectType<never>(program.error("Goodbye"));
+expectType<never>(program.error("Goodbye", { code: "my.error" }));
+expectType<never>(program.error("Goodbye", { exitCode: 2 }));
+expectType<never>(program.error("Goodbye", { code: "my.error", exitCode: 2 }));
 
 // hook
-expectType<commander.Command>(program.hook('preAction', () => {}));
-expectType<commander.Command>(program.hook('postAction', () => {}));
-expectType<commander.Command>(program.hook('preAction', async () => {}));
+expectType<commander.Command>(program.hook("preAction", () => {}));
+expectType<commander.Command>(program.hook("postAction", () => {}));
+expectType<commander.Command>(program.hook("preAction", async () => {}));
 expectType<commander.Command>(
-  program.hook('preAction', (thisCommand, actionCommand) => {
+  program.hook("preAction", (thisCommand, actionCommand) => {
     // implicit parameter types
     expectType<commander.Command>(thisCommand);
     expectType<commander.Command>(actionCommand);
   }),
 );
-expectType<commander.Command>(program.hook('preSubcommand', () => {}));
+expectType<commander.Command>(program.hook("preSubcommand", () => {}));
 expectType<commander.Command>(
-  program.hook('preSubcommand', (thisCommand, subcommand) => {
+  program.hook("preSubcommand", (thisCommand, subcommand) => {
     // implicit parameter types
     expectType<commander.Command>(thisCommand);
     expectType<commander.Command>(subcommand);
@@ -151,16 +151,16 @@ program.action(function () {
 });
 
 // option
-expectType<commander.Command>(program.option('-a,--alpha'));
-expectType<commander.Command>(program.option('-p, --peppers', 'Add peppers'));
+expectType<commander.Command>(program.option("-a,--alpha"));
+expectType<commander.Command>(program.option("-p, --peppers", "Add peppers"));
 expectType<commander.Command>(
-  program.option('-s, --string [value]', 'default string', 'value'),
+  program.option("-s, --string [value]", "default string", "value"),
 );
 expectType<commander.Command>(
-  program.option('-b, --boolean', 'default boolean', false),
+  program.option("-b, --boolean", "default boolean", false),
 );
 expectType<commander.Command>(
-  program.option('--drink <size', 'drink size', /small|medium|large/),
+  program.option("--drink <size", "drink size", /small|medium|large/),
 ); // deprecated
 
 // example coercion functions from README
@@ -178,112 +178,112 @@ function collect(value: string, previous: string[]): string[] {
 }
 
 function commaSeparatedList(value: string): string[] {
-  return value.split(',');
+  return value.split(",");
 }
 
 expectType<commander.Command>(
-  program.option('-f, --float <number>', 'float argument', parseFloat),
+  program.option("-f, --float <number>", "float argument", parseFloat),
 );
 expectType<commander.Command>(
-  program.option('-f, --float <number>', 'float argument', parseFloat, 3.2),
+  program.option("-f, --float <number>", "float argument", parseFloat, 3.2),
 );
 expectType<commander.Command>(
-  program.option('-i, --integer <number>', 'integer argument', myParseInt),
+  program.option("-i, --integer <number>", "integer argument", myParseInt),
 );
 expectType<commander.Command>(
-  program.option('-i, --integer <number>', 'integer argument', myParseInt, 5),
+  program.option("-i, --integer <number>", "integer argument", myParseInt, 5),
 );
 expectType<commander.Command>(
   program.option(
-    '-v, --verbose',
-    'verbosity that can be increased',
+    "-v, --verbose",
+    "verbosity that can be increased",
     increaseVerbosity,
     0,
   ),
 );
 expectType<commander.Command>(
-  program.option('-c, --collect <value>', 'repeatable value', collect, []),
+  program.option("-c, --collect <value>", "repeatable value", collect, []),
 );
 expectType<commander.Command>(
   program.option(
-    '-l, --list <items>',
-    'comma separated list',
+    "-l, --list <items>",
+    "comma separated list",
     commaSeparatedList,
   ),
 );
 
 // requiredOption, same tests as option
-expectType<commander.Command>(program.requiredOption('-a,--alpha'));
+expectType<commander.Command>(program.requiredOption("-a,--alpha"));
 expectType<commander.Command>(
-  program.requiredOption('-p, --peppers', 'Add peppers'),
+  program.requiredOption("-p, --peppers", "Add peppers"),
 );
 expectType<commander.Command>(
-  program.requiredOption('-s, --string [value]', 'default string', 'value'),
+  program.requiredOption("-s, --string [value]", "default string", "value"),
 );
 expectType<commander.Command>(
-  program.requiredOption('-b, --boolean', 'default boolean', false),
+  program.requiredOption("-b, --boolean", "default boolean", false),
 );
 expectType<commander.Command>(
-  program.requiredOption('--drink <size', 'drink size', /small|medium|large/),
+  program.requiredOption("--drink <size", "drink size", /small|medium|large/),
 ); // deprecated
 
 expectType<commander.Command>(
-  program.requiredOption('-f, --float <number>', 'float argument', parseFloat),
+  program.requiredOption("-f, --float <number>", "float argument", parseFloat),
 );
 expectType<commander.Command>(
   program.requiredOption(
-    '-f, --float <number>',
-    'float argument',
+    "-f, --float <number>",
+    "float argument",
     parseFloat,
     3.2,
   ),
 );
 expectType<commander.Command>(
   program.requiredOption(
-    '-i, --integer <number>',
-    'integer argument',
+    "-i, --integer <number>",
+    "integer argument",
     myParseInt,
   ),
 );
 expectType<commander.Command>(
   program.requiredOption(
-    '-i, --integer <number>',
-    'integer argument',
+    "-i, --integer <number>",
+    "integer argument",
     myParseInt,
     5,
   ),
 );
 expectType<commander.Command>(
   program.requiredOption(
-    '-v, --verbose',
-    'verbosity that can be increased',
+    "-v, --verbose",
+    "verbosity that can be increased",
     increaseVerbosity,
     0,
   ),
 );
 expectType<commander.Command>(
   program.requiredOption(
-    '-c, --collect <value>',
-    'repeatable value',
+    "-c, --collect <value>",
+    "repeatable value",
     collect,
     [],
   ),
 );
 expectType<commander.Command>(
   program.requiredOption(
-    '-l, --list <items>',
-    'comma separated list',
+    "-l, --list <items>",
+    "comma separated list",
     commaSeparatedList,
   ),
 );
 
 // createOption
-expectType<commander.Option>(program.createOption('a, --alpha'));
-expectType<commander.Option>(program.createOption('a, --alpha', 'description'));
+expectType<commander.Option>(program.createOption("a, --alpha"));
+expectType<commander.Option>(program.createOption("a, --alpha", "description"));
 
 // addOption
 expectType<commander.Command>(
-  program.addOption(new commander.Option('-s,--simple')),
+  program.addOption(new commander.Option("-s,--simple")),
 );
 
 // storeOptionsAsProperties
@@ -296,25 +296,25 @@ expectType<commander.Command & commander.OptionValues>(
 expectType<commander.Command>(program.storeOptionsAsProperties(false));
 
 // getOptionValue
-void program.getOptionValue('example');
+void program.getOptionValue("example");
 
 // setOptionValue
-expectType<commander.Command>(program.setOptionValue('example', 'value'));
-expectType<commander.Command>(program.setOptionValue('example', true));
+expectType<commander.Command>(program.setOptionValue("example", "value"));
+expectType<commander.Command>(program.setOptionValue("example", true));
 
 // setOptionValueWithSource
 expectType<commander.Command>(
-  program.setOptionValueWithSource('example', [], 'cli'),
+  program.setOptionValueWithSource("example", [], "cli"),
 );
 
 // getOptionValueSource
 expectType<commander.OptionValueSource | undefined>(
-  program.getOptionValueSource('example'),
+  program.getOptionValueSource("example"),
 );
 
 // getOptionValueSourceWithGlobals
 expectType<commander.OptionValueSource | undefined>(
-  program.getOptionValueSourceWithGlobals('example'),
+  program.getOptionValueSourceWithGlobals("example"),
 );
 
 // combineFlagAndOptionalValue
@@ -341,33 +341,33 @@ expectType<commander.Command>(program.passThroughOptions(false));
 expectType<commander.Command>(program.parse());
 expectType<commander.Command>(program.parse(process.argv));
 expectType<commander.Command>(
-  program.parse(['node', 'script.js'], { from: 'node' }),
+  program.parse(["node", "script.js"], { from: "node" }),
 );
 expectType<commander.Command>(
-  program.parse(['node', 'script.js'], { from: 'electron' }),
+  program.parse(["node", "script.js"], { from: "electron" }),
 );
-expectType<commander.Command>(program.parse(['--option'], { from: 'user' }));
-expectType<commander.Command>(program.parse(['node', 'script.js'] as const));
+expectType<commander.Command>(program.parse(["--option"], { from: "user" }));
+expectType<commander.Command>(program.parse(["node", "script.js"] as const));
 
 // parseAsync, same tests as parse
 expectType<Promise<commander.Command>>(program.parseAsync());
 expectType<Promise<commander.Command>>(program.parseAsync(process.argv));
 expectType<Promise<commander.Command>>(
-  program.parseAsync(['node', 'script.js'], { from: 'node' }),
+  program.parseAsync(["node", "script.js"], { from: "node" }),
 );
 expectType<Promise<commander.Command>>(
-  program.parseAsync(['node', 'script.js'], { from: 'electron' }),
+  program.parseAsync(["node", "script.js"], { from: "electron" }),
 );
 expectType<Promise<commander.Command>>(
-  program.parseAsync(['--option'], { from: 'user' }),
+  program.parseAsync(["--option"], { from: "user" }),
 );
 expectType<Promise<commander.Command>>(
-  program.parseAsync(['node', 'script.js'] as const),
+  program.parseAsync(["node", "script.js"] as const),
 );
 
 // parseOptions (and ParseOptionsResult)
 expectType<{ operands: string[]; unknown: string[] }>(
-  program.parseOptions(['node', 'script.js', 'hello']),
+  program.parseOptions(["node", "script.js", "hello"]),
 );
 
 // save/restore state
@@ -402,45 +402,45 @@ expectType<string>(myCheeseOptionWithGlobals.cheese);
 expectType(myCheeseOptionWithGlobals.foo);
 
 // description
-expectType<commander.Command>(program.description('my description'));
+expectType<commander.Command>(program.description("my description"));
 expectType<string>(program.description());
 expectType<commander.Command>(
-  program.description('my description of command with arg foo', {
-    foo: 'foo description',
+  program.description("my description of command with arg foo", {
+    foo: "foo description",
   }),
 ); // deprecated
 
 // summary
-expectType<commander.Command>(program.summary('my summary'));
+expectType<commander.Command>(program.summary("my summary"));
 expectType<string>(program.summary());
 
 // alias
-expectType<commander.Command>(program.alias('my alias'));
+expectType<commander.Command>(program.alias("my alias"));
 expectType<string>(program.alias());
 
 // aliases
-expectType<commander.Command>(program.aliases(['first-alias', 'second-alias']));
+expectType<commander.Command>(program.aliases(["first-alias", "second-alias"]));
 expectType<commander.Command>(
-  program.aliases(['first-alias', 'second-alias'] as const),
+  program.aliases(["first-alias", "second-alias"] as const),
 );
 expectType<string[]>(program.aliases());
 
 // usage
-expectType<commander.Command>(program.usage('my usage'));
+expectType<commander.Command>(program.usage("my usage"));
 expectType<string>(program.usage());
 
 // name
-expectType<commander.Command>(program.name('my-name'));
+expectType<commander.Command>(program.name("my-name"));
 expectType<string>(program.name());
 
 // helpGroup related
-expectType<commander.Command>(program.helpGroup('My Group'));
+expectType<commander.Command>(program.helpGroup("My Group"));
 expectType<string>(program.helpGroup());
 
-expectType<commander.Command>(program.commandsGroup('My Group'));
+expectType<commander.Command>(program.commandsGroup("My Group"));
 expectType<string>(program.commandsGroup());
 
-expectType<commander.Command>(program.optionsGroup('My Group'));
+expectType<commander.Command>(program.optionsGroup("My Group"));
 expectType<string>(program.optionsGroup());
 
 // nameFromFilename
@@ -473,38 +473,38 @@ expectType<string>(program.helpInformation());
 expectType<string>(program.helpInformation({ error: true }));
 
 // helpOption
-expectType<commander.Command>(program.helpOption('-h,--help'));
+expectType<commander.Command>(program.helpOption("-h,--help"));
 expectType<commander.Command>(
-  program.helpOption('-h,--help', 'custom description'),
+  program.helpOption("-h,--help", "custom description"),
 );
 expectType<commander.Command>(
-  program.helpOption(undefined, 'custom description'),
+  program.helpOption(undefined, "custom description"),
 );
 expectType<commander.Command>(program.helpOption(false));
 
 // addHelpOption
 expectType<commander.Command>(
-  program.addHelpOption(new commander.Option('-h,--help')),
+  program.addHelpOption(new commander.Option("-h,--help")),
 );
 
 // addHelpText
-expectType<commander.Command>(program.addHelpText('after', 'text'));
-expectType<commander.Command>(program.addHelpText('afterAll', 'text'));
-expectType<commander.Command>(program.addHelpText('before', () => 'before'));
+expectType<commander.Command>(program.addHelpText("after", "text"));
+expectType<commander.Command>(program.addHelpText("afterAll", "text"));
+expectType<commander.Command>(program.addHelpText("before", () => "before"));
 expectType<commander.Command>(
-  program.addHelpText('beforeAll', (context) => {
+  program.addHelpText("beforeAll", (context) => {
     expectType<boolean>(context.error);
     expectType<commander.Command>(context.command);
-    return '';
+    return "";
   }),
 );
 
 // on
-expectType<commander.Command>(program.on('command:foo', () => {}));
+expectType<commander.Command>(program.on("command:foo", () => {}));
 
 // createCommand
 expectType<commander.Command>(program.createCommand());
-expectType<commander.Command>(program.createCommand('name'));
+expectType<commander.Command>(program.createCommand("name"));
 
 class MyCommand extends commander.Command {
   createCommand(name?: string): MyCommand {
@@ -516,7 +516,7 @@ class MyCommand extends commander.Command {
   }
 }
 const myProgram = new MyCommand();
-expectType<MyCommand>(myProgram.command('sub'));
+expectType<MyCommand>(myProgram.command("sub"));
 
 // configureHelp
 expectType<commander.Help>(program.createHelp());
@@ -536,7 +536,7 @@ expectType<commander.Command>(
 // showHelpAfterError
 expectType<commander.Command>(program.showHelpAfterError());
 expectType<commander.Command>(program.showHelpAfterError(true));
-expectType<commander.Command>(program.showHelpAfterError('See --help'));
+expectType<commander.Command>(program.showHelpAfterError("See --help"));
 
 // showSuggestionAfterError
 expectType<commander.Command>(program.showSuggestionAfterError());
@@ -570,8 +570,8 @@ expectType<commander.Command>(
 // Help
 const helper = new commander.Help();
 const helperCommand = new commander.Command();
-const helperOption = new commander.Option('-a, --all');
-const helperArgument = new commander.Argument('<file>');
+const helperOption = new commander.Option("-a, --all");
+const helperArgument = new commander.Argument("<file>");
 
 helper.prepareContext({});
 helper.prepareContext({ helpWidth: 120, error: true, outputHasColors: false });
@@ -602,38 +602,38 @@ expectType<number>(helper.longestGlobalOptionTermLength(helperCommand, helper));
 expectType<number>(helper.longestArgumentTermLength(helperCommand, helper));
 expectType<number>(helper.padWidth(helperCommand, helper));
 
-expectType<number>(helper.displayWidth('some string'));
-expectType<string>(helper.boxWrap('a b c', 50));
+expectType<number>(helper.displayWidth("some string"));
+expectType<string>(helper.boxWrap("a b c", 50));
 expectType<string>(
-  helper.formatItem('--example', 12, 'example description', helper),
+  helper.formatItem("--example", 12, "example description", helper),
 );
-expectType<boolean>(helper.preformatted('a\nb c'));
+expectType<boolean>(helper.preformatted("a\nb c"));
 
 {
   const formattedItems = [
-    '--example  example description',
-    '--example2 example2 description',
+    "--example  example description",
+    "--example2 example2 description",
   ];
   expectType<string[]>(
-    helper.formatItemList('Options', formattedItems, helper),
+    helper.formatItemList("Options", formattedItems, helper),
   );
 }
 
 {
-  const unsortedOptions = [new commander.Option('-a, --all')];
+  const unsortedOptions = [new commander.Option("-a, --all")];
   const sortedOptions = unsortedOptions;
   const groupsItemsOptionHeading = (option: commander.Option) =>
-    option.helpGroupHeading ?? 'Options:';
+    option.helpGroupHeading ?? "Options:";
   expectType<Map<string, commander.Option[]>>(
     helper.groupItems(unsortedOptions, sortedOptions, groupsItemsOptionHeading),
   );
 }
 
 {
-  const unsortedCommands = [new commander.Command('foo')];
+  const unsortedCommands = [new commander.Command("foo")];
   const sortedCommands = unsortedCommands;
   const groupsItemsCommandHeading = (cmd: commander.Command) =>
-    cmd.helpGroup() ?? 'Commands:';
+    cmd.helpGroup() ?? "Commands:";
   expectType<Map<string, commander.Command[]>>(
     helper.groupItems(
       unsortedCommands,
@@ -643,29 +643,29 @@ expectType<boolean>(helper.preformatted('a\nb c'));
   );
 }
 
-expectType<string>(helper.styleTitle('Usage:'));
+expectType<string>(helper.styleTitle("Usage:"));
 
-expectType<string>(helper.styleUsage('foo [options] <file>'));
-expectType<string>(helper.styleCommandText('foo'));
+expectType<string>(helper.styleUsage("foo [options] <file>"));
+expectType<string>(helper.styleCommandText("foo"));
 
-expectType<string>(helper.styleCommandDescription('description'));
-expectType<string>(helper.styleOptionDescription('description'));
-expectType<string>(helper.styleSubcommandDescription('description'));
-expectType<string>(helper.styleArgumentDescription('description'));
-expectType<string>(helper.styleDescriptionText('description'));
+expectType<string>(helper.styleCommandDescription("description"));
+expectType<string>(helper.styleOptionDescription("description"));
+expectType<string>(helper.styleSubcommandDescription("description"));
+expectType<string>(helper.styleArgumentDescription("description"));
+expectType<string>(helper.styleDescriptionText("description"));
 
-expectType<string>(helper.styleOptionTerm('-a, --all'));
-expectType<string>(helper.styleSubcommandTerm('bar [options]'));
-expectType<string>(helper.styleArgumentTerm('<file>'));
+expectType<string>(helper.styleOptionTerm("-a, --all"));
+expectType<string>(helper.styleSubcommandTerm("bar [options]"));
+expectType<string>(helper.styleArgumentTerm("<file>"));
 
-expectType<string>(helper.styleOptionText('-a, --all'));
-expectType<string>(helper.styleSubcommandText('bar'));
-expectType<string>(helper.styleArgumentText('<file>'));
+expectType<string>(helper.styleOptionText("-a, --all"));
+expectType<string>(helper.styleSubcommandText("bar"));
+expectType<string>(helper.styleArgumentText("<file>"));
 
 expectType<string>(helper.formatHelp(helperCommand, helper));
 
 // Option properties
-const baseOption = new commander.Option('-f,--foo', 'foo description');
+const baseOption = new commander.Option("-f,--foo", "foo description");
 expectType<string>(baseOption.flags);
 expectType<string>(baseOption.description);
 expectType<boolean>(baseOption.required);
@@ -688,14 +688,14 @@ expectType<string | undefined>(baseOption.helpGroupHeading);
 
 // default
 expectType<commander.Option>(baseOption.default(3));
-expectType<commander.Option>(baseOption.default(60, 'one minute'));
+expectType<commander.Option>(baseOption.default(60, "one minute"));
 
 // preset
 expectType<commander.Option>(baseOption.preset(123));
-expectType<commander.Option>(baseOption.preset('abc'));
+expectType<commander.Option>(baseOption.preset("abc"));
 
 // env
-expectType<commander.Option>(baseOption.env('PORT'));
+expectType<commander.Option>(baseOption.env("PORT"));
 
 // argParser
 expectType<commander.Option>(
@@ -717,16 +717,16 @@ expectType<commander.Option>(baseOption.hideHelp(true));
 expectType<commander.Option>(baseOption.hideHelp(false));
 
 // choices
-expectType<commander.Option>(baseOption.choices(['a', 'b']));
-expectType<commander.Option>(baseOption.choices(['a', 'b'] as const));
+expectType<commander.Option>(baseOption.choices(["a", "b"]));
+expectType<commander.Option>(baseOption.choices(["a", "b"] as const));
 
 // conflicts
-expectType<commander.Option>(baseOption.conflicts('a'));
-expectType<commander.Option>(baseOption.conflicts(['a', 'b']));
+expectType<commander.Option>(baseOption.conflicts("a"));
+expectType<commander.Option>(baseOption.conflicts(["a", "b"]));
 
 // implies
 expectType<commander.Option>(
-  baseOption.implies({ option: 'VALUE', colour: false }),
+  baseOption.implies({ option: "VALUE", colour: false }),
 );
 
 // name
@@ -736,7 +736,7 @@ expectType<string>(baseOption.name());
 expectType<string>(baseOption.attributeName());
 
 // helpGroup
-expectType<commander.Option>(baseOption.helpGroup('My Group'));
+expectType<commander.Option>(baseOption.helpGroup("My Group"));
 // @ts-expect-error: Option helpGroup() can not be used as a getter.
 baseOption.helpGroup();
 
@@ -744,7 +744,7 @@ baseOption.helpGroup();
 expectType<boolean>(baseOption.isBoolean());
 
 // Argument properties
-const baseArgument = new commander.Argument('<foo');
+const baseArgument = new commander.Argument("<foo");
 expectType<string>(baseArgument.description);
 expectType<boolean>(baseArgument.required);
 expectType<boolean>(baseArgument.variadic);
@@ -760,7 +760,7 @@ expectType<string>(baseArgument.name());
 
 // default
 expectType<commander.Argument>(baseArgument.default(3));
-expectType<commander.Argument>(baseArgument.default(60, 'one minute'));
+expectType<commander.Argument>(baseArgument.default(60, "one minute"));
 
 // argParser
 expectType<commander.Argument>(
@@ -773,8 +773,8 @@ expectType<commander.Argument>(
 );
 
 // choices
-expectType<commander.Argument>(baseArgument.choices(['a', 'b']));
-expectType<commander.Argument>(baseArgument.choices(['a', 'b'] as const));
+expectType<commander.Argument>(baseArgument.choices(["a", "b"]));
+expectType<commander.Argument>(baseArgument.choices(["a", "b"] as const));
 
 // argRequired
 expectType<commander.Argument>(baseArgument.argRequired());
@@ -783,5 +783,5 @@ expectType<commander.Argument>(baseArgument.argRequired());
 expectType<commander.Argument>(baseArgument.argOptional());
 
 // createArgument
-expectType<commander.Argument>(program.createArgument('<name>'));
-expectType<commander.Argument>(program.createArgument('<name>', 'description'));
+expectType<commander.Argument>(program.createArgument("<name>"));
+expectType<commander.Argument>(program.createArgument("<name>", "description"));

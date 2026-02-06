@@ -1,8 +1,8 @@
-const { Argument } = require('./lib/argument.js');
-const { Command } = require('./lib/command.js');
-const { CommanderError, InvalidArgumentError } = require('./lib/error.js');
-const { Help } = require('./lib/help.js');
-const { Option } = require('./lib/option.js');
+const { Argument } = require("./lib/argument.js");
+const { Command } = require("./lib/command.js");
+const { CommanderError, InvalidArgumentError } = require("./lib/error.js");
+const { Help } = require("./lib/help.js");
+const { Option } = require("./lib/option.js");
 
 exports.program = new Command();
 

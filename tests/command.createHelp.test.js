@@ -1,9 +1,9 @@
-const commander = require('../');
+const commander = require("../");
 
-test('when override createCommand then affects help', () => {
+test("when override createCommand then affects help", () => {
   class MyHelp extends commander.Help {
     formatHelp(cmd, helper) {
-      return 'custom';
+      return "custom";
     }
   }
 
@@ -14,5 +14,5 @@ test('when override createCommand then affects help', () => {
   }
 
   const program = new MyCommand();
-  expect(program.helpInformation()).toEqual('custom');
+  expect(program.helpInformation()).toEqual("custom");
 });

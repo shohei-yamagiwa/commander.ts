@@ -1,4 +1,4 @@
-import commander from './index.js';
+import commander from "./index.js";
 
 // wrapper to provide named exports for ESM.
 export const {

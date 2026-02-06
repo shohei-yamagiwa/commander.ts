@@ -340,7 +340,7 @@ export class Help {
 export type HelpConfiguration = Partial<Help>;
 
 export interface ParseOptions {
-  from: 'node' | 'electron' | 'user';
+  from: "node" | "electron" | "user";
 }
 export interface HelpContext {
   // optional parameter for .help() and .outputHelp()
@@ -364,11 +364,11 @@ export interface OutputConfiguration {
   stripColor?(str: string): string;
 }
 
-export type AddHelpTextPosition = 'beforeAll' | 'before' | 'after' | 'afterAll';
-export type HookEvent = 'preSubcommand' | 'preAction' | 'postAction';
+export type AddHelpTextPosition = "beforeAll" | "before" | "after" | "afterAll";
+export type HookEvent = "preSubcommand" | "preAction" | "postAction";
 // The source is a string so author can define their own too.
 export type OptionValueSource =
-  | LiteralUnion<'default' | 'config' | 'env' | 'cli' | 'implied', string>
+  | LiteralUnion<"default" | "config" | "env" | "cli" | "implied", string>
   | undefined;
 
 export type OptionValues = Record<string, any>;
@@ -420,7 +420,7 @@ export class Command {
   command(
     nameAndArgs: string,
     opts?: CommandOptions,
-  ): ReturnType<this['createCommand']>;
+  ): ReturnType<this["createCommand"]>;
   /**
    * Define a command, implemented in a separate executable file.
    *

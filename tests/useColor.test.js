@@ -1,6 +1,6 @@
-const { useColor } = require('../lib/command.js');
+const { useColor } = require("../lib/command.js");
 
-describe('internal useColor environment variable support', () => {
+describe("internal useColor environment variable support", () => {
   let holdNoColor = process.env.NO_COLOR;
   let holdForceColor = process.env.FORCE_COLOR;
   let holdCliColorForce = process.env.CLICOLOR_FORCE;
@@ -22,7 +22,7 @@ describe('internal useColor environment variable support', () => {
     else process.env.CLICOLOR_FORCE = holdCliColorForce;
   });
 
-  test('when no ENV defined then returns undefined', () => {
+  test("when no ENV defined then returns undefined", () => {
     expect(useColor()).toBeUndefined();
   });
 
@@ -31,33 +31,33 @@ describe('internal useColor environment variable support', () => {
   //    Command-line software which adds ANSI color to its output by default should check for a NO_COLOR environment variable that,
   //    when present and not an empty string (regardless of its value), prevents the addition of ANSI color.
 
-  test('when NO_COLOR defined then returns false', () => {
-    process.env.NO_COLOR = 'non-empty';
+  test("when NO_COLOR defined then returns false", () => {
+    process.env.NO_COLOR = "non-empty";
     expect(useColor()).toBe(false);
   });
 
-  test('when NO_COLOR empty then returns undefined', () => {
-    process.env.NO_COLOR = '';
+  test("when NO_COLOR empty then returns undefined", () => {
+    process.env.NO_COLOR = "";
     expect(useColor()).toBe(undefined);
   });
 
   // https://bixense.com/clicolors/
 
-  test('when CLICOLOR_FORCE defined then returns true', () => {
-    process.env.CLICOLOR_FORCE = '1';
+  test("when CLICOLOR_FORCE defined then returns true", () => {
+    process.env.CLICOLOR_FORCE = "1";
     expect(useColor()).toBe(true);
   });
 
-  test('when CLICOLOR_FORCE empty then returns true', () => {
+  test("when CLICOLOR_FORCE empty then returns true", () => {
     // Follow original Apple usage and test for existence, don't ignore empty value.
-    process.env.CLICOLOR_FORCE = '';
+    process.env.CLICOLOR_FORCE = "";
     expect(useColor()).toBe(true);
   });
 
-  test('when CLICOLOR_FORCE and NO_COLOR defined then returns false', () => {
+  test("when CLICOLOR_FORCE and NO_COLOR defined then returns false", () => {
     // NO_COLOR trumps CLICOLOR_FORCE
-    process.env.NO_COLOR = '1';
-    process.env.CLICOLOR_FORCE = '1';
+    process.env.NO_COLOR = "1";
+    process.env.CLICOLOR_FORCE = "1";
     expect(useColor()).toBe(false);
   });
 
@@ -70,13 +70,13 @@ describe('internal useColor environment variable support', () => {
   // Test the expected Chalk values (which do produce same result in node).
 
   test.each([
-    ['true', true],
-    ['false', false],
-    ['0', false],
-    ['1', true],
-    ['2', true],
-    ['3', true],
-  ])('when FORCE_COLOR=%s then returns %s', (value, result) => {
+    ["true", true],
+    ["false", false],
+    ["0", false],
+    ["1", true],
+    ["2", true],
+    ["3", true],
+  ])("when FORCE_COLOR=%s then returns %s", (value, result) => {
     process.env.FORCE_COLOR = value;
     expect(useColor()).toBe(result);
   });

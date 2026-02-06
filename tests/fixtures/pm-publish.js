@@ -1,1 +1,1 @@
-console.log('publish');
+console.log("publish");

@@ -1,22 +1,22 @@
-const commander = require('../');
+const commander = require("../");
 
 // simple sanity check subcommand works
-test('when addCommand and specify subcommand then called', () => {
+test("when addCommand and specify subcommand then called", () => {
   const program = new commander.Command();
   const leafAction = jest.fn();
   const sub = new commander.Command();
-  sub.name('sub').action(leafAction);
+  sub.name("sub").action(leafAction);
   program.addCommand(sub);
 
-  program.parse('node test.js sub'.split(' '));
+  program.parse("node test.js sub".split(" "));
   expect(leafAction).toHaveBeenCalled();
 });
 
-test('when commands added using .addCommand and .command then internals similar', () => {
+test("when commands added using .addCommand and .command then internals similar", () => {
   const program1 = new commander.Command();
-  program1.command('sub');
+  program1.command("sub");
   const program2 = new commander.Command();
-  program2.addCommand(new commander.Command('sub'));
+  program2.addCommand(new commander.Command("sub"));
 
   // This is a bit of a cheat to check using .addCommand() produces similar result to .command(),
   // since .command() is well tested and understood.
@@ -28,10 +28,10 @@ test('when commands added using .addCommand and .command then internals similar'
 
   for (const key of Object.keys(cmd1)) {
     switch (typeof cmd1[key]) {
-      case 'string':
-      case 'boolean':
-      case 'number':
-      case 'undefined':
+      case "string":
+      case "boolean":
+      case "number":
+      case "undefined":
         // Compare values in a way that will be readable in test failure message.
         // eslint-disable-next-line jest/no-conditional-expect
         expect(`${key}:${cmd1[key]}`).toEqual(`${key}:${cmd2[key]}`);
@@ -40,7 +40,7 @@ test('when commands added using .addCommand and .command then internals similar'
   }
 });
 
-test('when command without name passed to .addCommand then throw', () => {
+test("when command without name passed to .addCommand then throw", () => {
   const program = new commander.Command();
   const cmd = new commander.Command();
   expect(() => {
@@ -48,10 +48,10 @@ test('when command without name passed to .addCommand then throw', () => {
   }).toThrow();
 });
 
-test('when executable command with custom executableFile passed to .addCommand then ok', () => {
+test("when executable command with custom executableFile passed to .addCommand then ok", () => {
   const program = new commander.Command();
-  const cmd = new commander.Command('sub');
-  cmd.command('exec', 'exec description', { executableFile: 'custom' });
+  const cmd = new commander.Command("sub");
+  cmd.command("exec", "exec description", { executableFile: "custom" });
   expect(() => {
     program.addCommand(cmd);
   }).not.toThrow();

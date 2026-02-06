@@ -1,8 +1,8 @@
-const commander = require('../');
+const commander = require("../");
 
-test('when set summary then get summary', () => {
+test("when set summary then get summary", () => {
   const program = new commander.Command();
-  const summary = 'abcdef';
+  const summary = "abcdef";
   program.summary(summary);
   expect(program.summary()).toMatch(summary);
 });
