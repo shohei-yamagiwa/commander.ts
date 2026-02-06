@@ -10,7 +10,8 @@
     "url": "git+https://github.com/shohei-yamagiwa/commander.ts.git"
   },
   "scripts": {
-    "test": "vitest"
+    "test": "vitest",
+    "coverage": "vitest run --coverage"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.2",

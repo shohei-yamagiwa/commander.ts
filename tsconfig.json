@@ -1,20 +1,23 @@
 {
   "compilerOptions": {
-    "lib": ["ES2021"],
-    "module": "node16",
-    "target": "es2021",
+    "target": "esnext",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
     "allowJs": false,
     "checkJs": false,
+    "isolatedModules": true,
+    "allowImportingTsExtensions": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "verbatimModuleSyntax": true,
+    "types": ["node", "vitest/globals"],
     "strict": true,
     "noImplicitAny": true,
     "strictNullChecks": true,
     "useUnknownInCatchVariables": false,
-    "types": ["node"],
-    "noEmit": true,
-    "skipLibCheck": false,
     "forceConsistentCasingInFileNames": true,
-    "esModuleInterop": true,
-    "resolveJsonModule": true
+    "skipLibCheck": false,
+    "noEmit": true
   },
   "include": ["**/*.ts"],
   "exclude": ["node_modules"]
