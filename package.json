@@ -4,6 +4,7 @@
   "description": "the complete solution for node.js command-line programs with native type safety by TypeScript",
   "author": "shohei-yamagiwa, TJ Holowaychuk <tj@vision-media.ca> (Original author of commander.js)",
   "license": "MIT",
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/shohei-yamagiwa/commander.ts.git"

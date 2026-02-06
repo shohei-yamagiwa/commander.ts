@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "lib": ["es2021"],
+    "lib": ["ES2021"],
     "module": "node16",
     "target": "es2021",
     "allowJs": false,
@@ -16,6 +16,6 @@
     "esModuleInterop": true,
     "resolveJsonModule": true
   },
-  "include": ["**/*.ts", "**/*.mts"],
+  "include": ["**/*.ts"],
   "exclude": ["node_modules"]
 }
