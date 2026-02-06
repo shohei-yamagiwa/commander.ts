@@ -6,10 +6,10 @@ import { defineConfig } from "eslint/config";
 
 export default defineConfig([
   {
-    files: ["**/*.{ts}"],
     plugins: { js },
     extends: ["js/recommended", prettier],
     languageOptions: { globals: globals.node },
+    files: ["**/*.ts"],
   },
   tseslint.configs.recommended,
 ]);
