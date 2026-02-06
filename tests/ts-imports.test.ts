@@ -7,12 +7,10 @@ import {
   InvalidOptionArgumentError,
   Help,
   createCommand,
-} from "../";
+} from "../index.ts";
 
 // Do some simple checks that expected imports are available at runtime.
 // Similar tests to esm-imports-test.js
-
-/* eslint-disable jest/expect-expect */
 
 function checkClass(obj: object, name: string): void {
   expect(typeof obj).toEqual("object");
