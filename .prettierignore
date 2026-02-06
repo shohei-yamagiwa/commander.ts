@@ -1,9 +1,6 @@
 # exclude everything, and opt-in to types we want to format
 **.*
 # add the filetypes we want to format
-!**.js
-!**.mjs
-!**.cjs
 !**.ts
 !**.mts
 !**.cts
