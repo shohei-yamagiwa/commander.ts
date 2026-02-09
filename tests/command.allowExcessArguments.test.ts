@@ -1,7 +1,4 @@
-// @ts-nocheck
-import { createRequire } from "node:module";
-const require = createRequire(import.meta.url);
-const commander = require("../");
+import * as commander from "../index.ts";
 
 // Not testing output, just testing whether an error is detected.
 

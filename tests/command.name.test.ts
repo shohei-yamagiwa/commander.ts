@@ -1,8 +1,5 @@
-// @ts-nocheck
-import { createRequire } from "node:module";
-const require = createRequire(import.meta.url);
-const path = require("path");
-const commander = require("../");
+import * as path from "node:path";
+import * as commander from "../index.ts";
 
 test("when construct with name then name is set", () => {
   const program = new commander.Command("foo");

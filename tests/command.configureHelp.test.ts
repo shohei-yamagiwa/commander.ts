@@ -1,7 +1,4 @@
-// @ts-nocheck
-import { createRequire } from "node:module";
-const require = createRequire(import.meta.url);
-const commander = require("../");
+import * as commander from "../index.ts";
 
 test("when configure program then affects program helpInformation", () => {
   const program = new commander.Command();

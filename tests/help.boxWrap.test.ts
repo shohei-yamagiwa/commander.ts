@@ -1,7 +1,4 @@
-// @ts-nocheck
-import { createRequire } from "node:module";
-const require = createRequire(import.meta.url);
-const commander = require("../");
+import * as commander from "../index.ts";
 
 test("when empty string then return empty string", () => {
   const helper = new commander.Help();

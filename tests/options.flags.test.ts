@@ -1,7 +1,4 @@
-// @ts-nocheck
-import { createRequire } from "node:module";
-const require = createRequire(import.meta.url);
-const commander = require("../");
+import * as commander from "../index.ts";
 
 // Test the various ways flags can be specified in the first parameter to `.option`
 

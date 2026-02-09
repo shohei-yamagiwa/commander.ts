@@ -1,7 +1,4 @@
-// @ts-nocheck
-import { createRequire } from "node:module";
-const require = createRequire(import.meta.url);
-const { Command, Option } = require("../");
+import { Command, Option } from "../index.ts";
 
 describe(".option()", () => {
   test("when short option flag conflicts then throws", () => {

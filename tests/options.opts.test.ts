@@ -1,7 +1,4 @@
-// @ts-nocheck
-import { createRequire } from "node:module";
-const require = createRequire(import.meta.url);
-const commander = require("../");
+import * as commander from "../index.ts";
 
 // Test the `.opts()` way of accessing option values.
 // Basic coverage of the main option types (leaving out negatable flags and options with optional values).

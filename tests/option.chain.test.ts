@@ -1,7 +1,4 @@
-// @ts-nocheck
-import { createRequire } from "node:module";
-const require = createRequire(import.meta.url);
-const { Option } = require("../");
+import { Option } from "../index.ts";
 
 describe("Option methods that should return this for chaining", () => {
   test("when call .default() then returns this", () => {

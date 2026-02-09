@@ -1,11 +1,8 @@
-// @ts-nocheck
-import { createRequire } from "node:module";
-const require = createRequire(import.meta.url);
-const commander = require("../");
-const process = require("node:process");
+import * as commander from "../index.ts";
+import * as process from "node:process";
 
 test("when default writeErr() then error on stderr", () => {
-  const writeSpy = jest
+  const writeSpy = vi
     .spyOn(process.stderr, "write")
     .mockImplementation(() => {});
   const program = new commander.Command();
@@ -22,10 +19,10 @@ test("when default writeErr() then error on stderr", () => {
 });
 
 test("when custom writeErr() then error on custom output", () => {
-  const writeSpy = jest
+  const writeSpy = vi
     .spyOn(process.stderr, "write")
     .mockImplementation(() => {});
-  const customWrite = jest.fn();
+  const customWrite = vi.fn();
   const program = new commander.Command();
   program.exitOverride().configureOutput({ writeErr: customWrite });
 
@@ -41,7 +38,7 @@ test("when custom writeErr() then error on custom output", () => {
 });
 
 test("when default write() then version on stdout", () => {
-  const writeSpy = jest
+  const writeSpy = vi
     .spyOn(process.stdout, "write")
     .mockImplementation(() => {});
   const program = new commander.Command();
@@ -56,10 +53,10 @@ test("when default write() then version on stdout", () => {
 });
 
 test("when custom write() then version on custom output", () => {
-  const writeSpy = jest
+  const writeSpy = vi
     .spyOn(process.stdout, "write")
     .mockImplementation(() => {});
-  const customWrite = jest.fn();
+  const customWrite = vi.fn();
   const program = new commander.Command();
   program
     .exitOverride()
@@ -76,7 +73,7 @@ test("when custom write() then version on custom output", () => {
 });
 
 test("when default write() then help on stdout", () => {
-  const writeSpy = jest
+  const writeSpy = vi
     .spyOn(process.stdout, "write")
     .mockImplementation(() => {});
   const program = new commander.Command();
@@ -87,10 +84,10 @@ test("when default write() then help on stdout", () => {
 });
 
 test("when custom write() then help error on custom output", () => {
-  const writeSpy = jest
+  const writeSpy = vi
     .spyOn(process.stdout, "write")
     .mockImplementation(() => {});
-  const customWrite = jest.fn();
+  const customWrite = vi.fn();
   const program = new commander.Command();
   program.configureOutput({ writeOut: customWrite });
   program.outputHelp();
@@ -101,7 +98,7 @@ test("when custom write() then help error on custom output", () => {
 });
 
 test("when default writeErr then help error on stderr", () => {
-  const writeSpy = jest
+  const writeSpy = vi
     .spyOn(process.stderr, "write")
     .mockImplementation(() => {});
   const program = new commander.Command();
@@ -112,10 +109,10 @@ test("when default writeErr then help error on stderr", () => {
 });
 
 test("when custom writeErr then help error on custom output", () => {
-  const writeSpy = jest
+  const writeSpy = vi
     .spyOn(process.stderr, "write")
     .mockImplementation(() => {});
-  const customWrite = jest.fn();
+  const customWrite = vi.fn();
   const program = new commander.Command();
   program.configureOutput({ writeErr: customWrite });
   program.outputHelp({ error: true });
@@ -287,14 +284,14 @@ test("when no custom setup and call formatItem direct then effective helpWidth i
 
 test("when set configureOutput then get configureOutput", () => {
   const outputOptions = {
-    writeOut: jest.fn(),
-    writeErr: jest.fn(),
-    getOutHelpWidth: jest.fn(),
-    getErrHelpWidth: jest.fn(),
-    getOutHasColors: jest.fn(),
-    getErrHasColors: jest.fn(),
-    outputError: jest.fn(),
-    stripColor: jest.fn(),
+    writeOut: vi.fn(),
+    writeErr: vi.fn(),
+    getOutHelpWidth: vi.fn(),
+    getErrHelpWidth: vi.fn(),
+    getOutHasColors: vi.fn(),
+    getErrHasColors: vi.fn(),
+    outputError: vi.fn(),
+    stripColor: vi.fn(),
   };
   const program = new commander.Command();
   program.configureOutput(outputOptions);
@@ -302,7 +299,7 @@ test("when set configureOutput then get configureOutput", () => {
 });
 
 test("when custom outputErr and error then outputErr called", () => {
-  const outputError = jest.fn();
+  const outputError = vi.fn();
   const program = new commander.Command();
   program.exitOverride().configureOutput({
     outputError,
@@ -318,8 +315,8 @@ test("when custom outputErr and error then outputErr called", () => {
 });
 
 test("when custom outputErr and writeErr and error then outputErr passed writeErr", () => {
-  const writeErr = () => jest.fn();
-  const outputError = jest.fn();
+  const writeErr = () => vi.fn();
+  const outputError = vi.fn();
   const program = new commander.Command();
   program.exitOverride().configureOutput({ writeErr, outputError });
 

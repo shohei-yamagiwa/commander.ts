@@ -1,13 +1,11 @@
-// @ts-nocheck
-import { createRequire } from "node:module";
-const require = createRequire(import.meta.url);import { dirname } from "node:path";
+import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const childProcess = require("child_process");
-const fs = require("fs");
-const path = require("path");
-const commander = require("../");
+import childProcess from "node:child_process";
+import fs from "node:fs";
+import * as path from "node:path";
+import * as commander from "../index.ts";
 
 // This file does in-process mocking. Bit clumsy but faster and less external clutter than using fixtures.
 // See also command.executableSubcommand.lookup.test.js for tests using fixtures.
@@ -35,7 +33,7 @@ describe("search for subcommand", () => {
   let existsSpy;
 
   beforeAll(() => {
-    spawnSpy = jest.spyOn(childProcess, "spawn").mockImplementation(() => {
+    spawnSpy = vi.spyOn(childProcess, "spawn").mockImplementation(() => {
       return {
         on: () => {},
         killed: true,
@@ -44,7 +42,7 @@ describe("search for subcommand", () => {
   });
 
   beforeEach(() => {
-    existsSpy = jest.spyOn(fs, "existsSync");
+    existsSpy = vi.spyOn(fs, "existsSync");
   });
 
   afterEach(() => {
@@ -259,7 +257,7 @@ describe("search for subcommand", () => {
         "script",
         "link-sub.js",
       );
-      const realPathSyncSpy = jest
+      const realPathSyncSpy = vi
         .spyOn(fs, "realpathSync")
         .mockImplementation((path) => {
           return path === linkPath ? scriptPath : linkPath;

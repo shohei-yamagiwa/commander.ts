@@ -1,14 +1,11 @@
-// @ts-nocheck
-import { createRequire } from "node:module";
-const require = createRequire(import.meta.url);
-const commander = require("../");
+import * as commander from "../index.ts";
 
 // The action handler used to be implemented using command events and listeners.
 // Now, this is mostly just for backwards compatibility.
 
 describe(".command('*')", () => {
   test("when action handler for subcommand then emit command:subcommand", () => {
-    const mockListener = jest.fn();
+    const mockListener = vi.fn();
     const program = new commander.Command();
     program.command("sub").action(() => {});
     program.on("command:sub", mockListener);
@@ -17,7 +14,7 @@ describe(".command('*')", () => {
   });
 
   test("when no action handler for subcommand then still emit command:subcommand", () => {
-    const mockListener = jest.fn();
+    const mockListener = vi.fn();
     const program = new commander.Command();
     program.command("sub");
     program.on("command:sub", mockListener);
@@ -26,7 +23,7 @@ describe(".command('*')", () => {
   });
 
   test("when subcommand has argument then emit command:subcommand with argument", () => {
-    const mockListener = jest.fn();
+    const mockListener = vi.fn();
     const program = new commander.Command();
     program.command("sub <file>").action(() => {});
     program.on("command:sub", mockListener);

@@ -1,7 +1,4 @@
-// @ts-nocheck
-import { createRequire } from "node:module";
-const require = createRequire(import.meta.url);
-const commander = require("../");
+import * as commander from "../index.ts";
 
 // Mostly testing direct on program, limited check that (sub)command working same.
 
@@ -17,7 +14,7 @@ test("when default then options not stored on command", () => {
 
 test("when default then options+command passed to action", () => {
   const program = new commander.Command();
-  const callback = jest.fn();
+  const callback = vi.fn();
   program.argument("<value>").action(callback);
   program.parse(["node", "test", "value"]);
   expect(callback).toHaveBeenCalledWith("value", program.opts(), program);
@@ -53,7 +50,7 @@ test("when storeOptionsAsProperties(false) then options not stored on command", 
 
 test("when storeOptionsAsProperties() then command+command passed to action", () => {
   const program = new commander.Command();
-  const callback = jest.fn();
+  const callback = vi.fn();
   program.storeOptionsAsProperties().argument("<value>").action(callback);
   program.parse(["node", "test", "value"]);
   expect(callback).toHaveBeenCalledWith("value", program, program);
@@ -61,7 +58,7 @@ test("when storeOptionsAsProperties() then command+command passed to action", ()
 
 test("when storeOptionsAsProperties(false) then opts+command passed to action", () => {
   const program = new commander.Command();
-  const callback = jest.fn();
+  const callback = vi.fn();
   program.storeOptionsAsProperties(false).argument("<value>").action(callback);
   program.parse(["node", "test", "value"]);
   expect(callback).toHaveBeenCalledWith("value", program.opts(), program);

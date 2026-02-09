@@ -1,12 +1,10 @@
-// @ts-nocheck
-import { createRequire } from "node:module";
-const require = createRequire(import.meta.url);import { dirname } from "node:path";
+import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const childProcess = require("child_process");
-const path = require("path");
-const util = require("util");
+import * as childProcess from "node:child_process";
+import * as path from "node:path";
+import * as util from "node:util";
 const execFileAsync = util.promisify(childProcess.execFile);
 
 // Calling node explicitly so pm works without file suffix cross-platform.
@@ -14,7 +12,7 @@ const execFileAsync = util.promisify(childProcess.execFile);
 // See also command.executableSubcommand.search.test.js
 
 // Suppress false positive warnings due to use of testOrSkipOnWindows
-/* eslint-disable jest/no-standalone-expect */
+/* eslint-disable vi/no-standalone-expect */
 
 const testOrSkipOnWindows = process.platform === "win32" ? test.skip : test;
 const pm = path.join(__dirname, "./fixtures/pm");
@@ -24,10 +22,10 @@ test("when subcommand file missing then error", () => {
   return execFileAsync("node", [pm, "list"]).catch((err) => {
     if (process.platform === "win32") {
       // Get uncaught thrown error on Windows
-      // eslint-disable-next-line jest/no-conditional-expect
+      // eslint-disable-next-line vi/no-conditional-expect
       expect(err.stderr).toBeDefined();
     } else {
-      // eslint-disable-next-line jest/no-conditional-expect
+      // eslint-disable-next-line vi/no-conditional-expect
       expect(err.stderr).toMatch(/Error: 'pm-list' does not exist/);
     }
   });
@@ -38,10 +36,10 @@ test("when alias subcommand file missing then error", () => {
   return execFileAsync("node", [pm, "lst"]).catch((err) => {
     if (process.platform === "win32") {
       // Get uncaught thrown error on Windows
-      // eslint-disable-next-line jest/no-conditional-expect
+      // eslint-disable-next-line vi/no-conditional-expect
       expect(err.stderr).toBeDefined();
     } else {
-      // eslint-disable-next-line jest/no-conditional-expect
+      // eslint-disable-next-line vi/no-conditional-expect
       expect(err.stderr).toMatch(/Error: 'pm-list' does not exist/);
     }
   });

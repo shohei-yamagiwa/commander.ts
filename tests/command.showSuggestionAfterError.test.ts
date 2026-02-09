@@ -1,7 +1,4 @@
-// @ts-nocheck
-import { createRequire } from "node:module";
-const require = createRequire(import.meta.url);
-const { Command } = require("../");
+import { Command } from "../index.ts";
 
 function getSuggestion(program, arg) {
   let message = "";

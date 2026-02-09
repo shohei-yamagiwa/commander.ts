@@ -1,8 +1,8 @@
 import { EventEmitter } from "node:events";
-import * as childProcess from "node:child_process";
+import childProcess from "node:child_process";
 import * as path from "node:path";
-import * as fs from "node:fs";
-import * as process from "node:process";
+import fs from "node:fs";
+import process from "node:process";
 
 import { Argument, humanReadableArgName } from "./argument.ts";
 import { CommanderError } from "./error.ts";

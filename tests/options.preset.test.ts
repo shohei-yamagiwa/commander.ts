@@ -1,7 +1,4 @@
-// @ts-nocheck
-import { createRequire } from "node:module";
-const require = createRequire(import.meta.url);
-const { Command, Option } = require("../");
+import { Command, Option } from "../index.ts";
 
 test("when boolean option with string preset used then value is preset", () => {
   const program = new Command();

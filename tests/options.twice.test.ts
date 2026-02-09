@@ -1,7 +1,4 @@
-// @ts-nocheck
-import { createRequire } from "node:module";
-const require = createRequire(import.meta.url);
-const { Command, Option } = require("../");
+import { Command, Option } from "../index.ts";
 
 // Test that when option specified twice, second use wins.
 // Seems pretty obvious for boolean options, but there was a bug before Commander v9.

@@ -1,7 +1,4 @@
-// @ts-nocheck
-import { createRequire } from "node:module";
-const require = createRequire(import.meta.url);
-const commander = require("../");
+import * as commander from "../index.ts";
 
 test("when hook event wrong then throw", () => {
   const program = new commander.Command();
@@ -11,7 +8,7 @@ test("when hook event wrong then throw", () => {
 });
 
 test("when no action then action hooks not called", () => {
-  const hook = jest.fn();
+  const hook = vi.fn();
   const program = new commander.Command();
   program.hook("preAction", hook).hook("postAction", hook);
   program.parse([], { from: "user" });
@@ -106,7 +103,7 @@ describe("action hooks with synchronous hooks, order", () => {
 
 describe("action hooks context", () => {
   test("when hook on program then passed program/program", () => {
-    const hook = jest.fn();
+    const hook = vi.fn();
     const program = new commander.Command();
     program.hook("preAction", hook).action(() => {});
     program.parse([], { from: "user" });
@@ -114,7 +111,7 @@ describe("action hooks context", () => {
   });
 
   test("when hook on program and call sub then passed program/sub", () => {
-    const hook = jest.fn();
+    const hook = vi.fn();
     const program = new commander.Command();
     program.hook("preAction", hook);
     const sub = program.command("sub").action(() => {});
@@ -123,7 +120,7 @@ describe("action hooks context", () => {
   });
 
   test("when hook on sub and call sub then passed sub/sub", () => {
-    const hook = jest.fn();
+    const hook = vi.fn();
     const program = new commander.Command();
     const sub = program
       .command("sub")

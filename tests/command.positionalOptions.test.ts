@@ -1,7 +1,4 @@
-// @ts-nocheck
-import { createRequire } from "node:module";
-const require = createRequire(import.meta.url);
-const commander = require("../");
+import * as commander from "../index.ts";
 
 // The changes to parsing for positional options are subtle, and took extra care to work with
 // implicit help and default commands. Lots of tests.
@@ -36,7 +33,7 @@ describe("program with passThrough", () => {
 
   test("when action handler and unknown option after command-argument then option passed through", () => {
     const program = makeProgram();
-    const mockAction = jest.fn();
+    const mockAction = vi.fn();
     program.action(mockAction);
     program.parse(["arg", "--pass"], { from: "user" });
     expect(mockAction).toHaveBeenCalledWith(
@@ -48,7 +45,7 @@ describe("program with passThrough", () => {
 
   test("when help option (without command-argument) then help called", () => {
     const program = makeProgram();
-    const mockHelp = jest.fn(() => "");
+    const mockHelp = vi.fn(() => "");
 
     program.exitOverride().configureHelp({ formatHelp: mockHelp });
     try {
@@ -132,9 +129,9 @@ describe("program with positionalOptions and subcommand", () => {
     "help: when user args %p then program/sub help called %p/%p",
     (userArgs, expectProgramHelpCount, expectSubHelpCount) => {
       const { program, sub } = makeProgram();
-      const mockProgramHelp = jest.fn();
+      const mockProgramHelp = vi.fn();
       program.exitOverride().configureHelp({ formatHelp: mockProgramHelp });
-      const mockSubHelp = jest.fn();
+      const mockSubHelp = vi.fn();
       sub.exitOverride().configureHelp({ formatHelp: mockSubHelp });
 
       try {
@@ -200,9 +197,9 @@ describe("program with positionalOptions and default subcommand (called sub)", (
     "help: when user args %p then program/sub help called %p/%p",
     (userArgs, expectProgramHelpCount, expectSubHelpCount) => {
       const { program, sub } = makeProgram();
-      const mockProgramHelp = jest.fn();
+      const mockProgramHelp = vi.fn();
       program.exitOverride().configureHelp({ formatHelp: mockProgramHelp });
-      const mockSubHelp = jest.fn();
+      const mockSubHelp = vi.fn();
       sub.exitOverride().configureHelp({ formatHelp: mockSubHelp });
 
       try {
@@ -257,7 +254,7 @@ describe("subcommand with passThrough", () => {
 
   test("when action handler and unknown option after command-argument then option passed through", () => {
     const { program, sub } = makeProgram();
-    const mockAction = jest.fn();
+    const mockAction = vi.fn();
     sub.action(mockAction);
     program.parse(["sub", "arg", "--pass"], { from: "user" });
     expect(mockAction).toHaveBeenCalledWith(["arg", "--pass"], sub.opts(), sub);
@@ -325,7 +322,7 @@ describe("default command with passThrough", () => {
 
   test("when action handler and unknown option after command-argument then option passed through", () => {
     const { program, sub } = makeProgram();
-    const mockAction = jest.fn();
+    const mockAction = vi.fn();
     sub.action(mockAction);
     program.parse(["arg", "--pass"], { from: "user" });
     expect(mockAction).toHaveBeenCalledWith(["arg", "--pass"], sub.opts(), sub);

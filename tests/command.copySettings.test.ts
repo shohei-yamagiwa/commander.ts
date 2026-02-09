@@ -1,7 +1,4 @@
-// @ts-nocheck
-import { createRequire } from "node:module";
-const require = createRequire(import.meta.url);
-const commander = require("../");
+import * as commander from "../index.ts";
 
 // Tests some private properties as simpler than pure tests of observable behaviours.
 // Testing before and after values in some cases, to ensure value actually changes (when copied).
@@ -10,7 +7,7 @@ test("when add subcommand with .command() then calls copyInheritedSettings from 
   const program = new commander.Command();
 
   // This is a bit intrusive, but check expectation that copyInheritedSettings is called internally.
-  const copySettingMock = jest.fn();
+  const copySettingMock = vi.fn();
   program.createCommand = (name) => {
     const cmd = new commander.Command(name);
     cmd.copyInheritedSettings = copySettingMock;

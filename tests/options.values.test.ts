@@ -1,7 +1,4 @@
-// @ts-nocheck
-import { createRequire } from "node:module";
-const require = createRequire(import.meta.url);
-const commander = require("../");
+import * as commander from "../index.ts";
 
 // Test the ways values can be specified for options.
 // See also references on "Utility Conventions" in command.parseOptions.test.js

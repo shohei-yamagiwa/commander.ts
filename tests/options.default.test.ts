@@ -1,7 +1,4 @@
-// @ts-nocheck
-import { createRequire } from "node:module";
-const require = createRequire(import.meta.url);
-const { Command, Option } = require("../");
+import { Command, Option } from "../index.ts";
 
 describe(".option() with default and option not specified in parse", () => {
   test("when boolean option with boolean default then value is default", () => {

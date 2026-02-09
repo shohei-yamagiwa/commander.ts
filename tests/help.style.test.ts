@@ -1,10 +1,7 @@
-// @ts-nocheck
-import { createRequire } from "node:module";
-const require = createRequire(import.meta.url);
-const { Command } = require("../");
+import { Command } from "../index.ts";
 
 function red(str) {
-  // Use plain characters so not stripped in Jest failure messages. (Means displayWidth is bogus though.)
+  // Use plain characters so not stripped in vi failure messages. (Means displayWidth is bogus though.)
   return `RED ${str} DER`;
 }
 function stripRed(str) {

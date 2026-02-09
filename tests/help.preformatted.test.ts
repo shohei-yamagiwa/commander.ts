@@ -1,7 +1,4 @@
-// @ts-nocheck
-import { createRequire } from "node:module";
-const require = createRequire(import.meta.url);
-const { Help, Command } = require("../");
+import { Command, Help } from "../index.ts";
 
 describe("preformatted", () => {
   test("when single line then false", () => {

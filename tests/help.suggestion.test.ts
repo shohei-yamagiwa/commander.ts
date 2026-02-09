@@ -1,7 +1,4 @@
-// @ts-nocheck
-import { createRequire } from "node:module";
-const require = createRequire(import.meta.url);
-const { Command, Option } = require("../");
+import { Command, Option } from "../index.ts";
 
 // Note: setting up shared command configuration in getSuggestion,
 // and looking for possible subcommand 'sub'.

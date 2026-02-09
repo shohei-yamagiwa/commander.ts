@@ -1,15 +1,13 @@
-// @ts-nocheck
-import { createRequire } from "node:module";
-const require = createRequire(import.meta.url);import { dirname } from "node:path";
+import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const path = require("path");
-const commander = require("../");
+import * as path from "node:path";
+import * as commander from "../index.ts";
 
 describe("command with conflicting options", () => {
   function makeProgram() {
-    const actionMock = jest.fn();
+    const actionMock = vi.fn();
     const program = new commander.Command();
     program
       .exitOverride()
@@ -266,7 +264,7 @@ describe("command with conflicting options", () => {
   test("should not throw error when conflicts is invoked with a single string that includes another option", () => {
     const { program } = makeProgram();
 
-    const actionMock = jest.fn();
+    const actionMock = vi.fn();
 
     program
       .command("bar")

@@ -1,7 +1,4 @@
-// @ts-nocheck
-import { createRequire } from "node:module";
-const require = createRequire(import.meta.url);
-const commander = require("../");
+import * as commander from "../index.ts";
 
 // Using outputHelp to simplify testing.
 
@@ -9,7 +6,7 @@ describe("program calls to addHelpText", () => {
   let writeSpy;
 
   beforeAll(() => {
-    writeSpy = jest.spyOn(process.stdout, "write").mockImplementation(() => {});
+    writeSpy = vi.spyOn(process.stdout, "write").mockImplementation(() => {});
   });
 
   afterEach(() => {
@@ -93,7 +90,7 @@ describe("program and subcommand calls to addHelpText", () => {
   let writeSpy;
 
   beforeAll(() => {
-    writeSpy = jest.spyOn(process.stdout, "write").mockImplementation(() => {});
+    writeSpy = vi.spyOn(process.stdout, "write").mockImplementation(() => {});
   });
 
   afterEach(() => {
@@ -107,7 +104,7 @@ describe("program and subcommand calls to addHelpText", () => {
   test('when "before" on program then not called on subcommand', () => {
     const program = new commander.Command();
     const sub = program.command("sub");
-    const testMock = jest.fn();
+    const testMock = vi.fn();
     program.addHelpText("before", testMock);
     sub.outputHelp();
     expect(testMock).not.toHaveBeenCalled();
@@ -116,7 +113,7 @@ describe("program and subcommand calls to addHelpText", () => {
   test('when "beforeAll" on program then is called on subcommand', () => {
     const program = new commander.Command();
     const sub = program.command("sub");
-    const testMock = jest.fn();
+    const testMock = vi.fn();
     program.addHelpText("beforeAll", testMock);
     sub.outputHelp();
     expect(testMock).toHaveBeenCalled();
@@ -125,7 +122,7 @@ describe("program and subcommand calls to addHelpText", () => {
   test('when "after" on program then not called on subcommand', () => {
     const program = new commander.Command();
     const sub = program.command("sub");
-    const testMock = jest.fn();
+    const testMock = vi.fn();
     program.addHelpText("after", testMock);
     sub.outputHelp();
     expect(testMock).not.toHaveBeenCalled();
@@ -134,7 +131,7 @@ describe("program and subcommand calls to addHelpText", () => {
   test('when "afterAll" on program then is called on subcommand', () => {
     const program = new commander.Command();
     const sub = program.command("sub");
-    const testMock = jest.fn();
+    const testMock = vi.fn();
     program.addHelpText("afterAll", testMock);
     sub.outputHelp();
     expect(testMock).toHaveBeenCalled();
@@ -146,10 +143,10 @@ describe("context checks with full parse", () => {
   let stderrSpy;
 
   beforeAll(() => {
-    stdoutSpy = jest
+    stdoutSpy = vi
       .spyOn(process.stdout, "write")
       .mockImplementation(() => {});
-    stderrSpy = jest
+    stderrSpy = vi
       .spyOn(process.stderr, "write")
       .mockImplementation(() => {});
   });

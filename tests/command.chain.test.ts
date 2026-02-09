@@ -1,7 +1,4 @@
-// @ts-nocheck
-import { createRequire } from "node:module";
-const require = createRequire(import.meta.url);
-const { Command, Option, Argument } = require("../");
+import { Argument, Command, Option } from "../index.ts";
 
 // Testing the functions which should chain.
 // parse and parseAsync are tested in command.parse.test.js

@@ -1,7 +1,4 @@
-// @ts-nocheck
-import { createRequire } from "node:module";
-const require = createRequire(import.meta.url);
-const commander = require("../");
+import * as commander from "../index.ts";
 
 // Test .version. Using exitOverride to check behaviour (instead of mocking process.exit).
 
@@ -10,7 +7,7 @@ describe(".version", () => {
     const errorMessage = "unknownOption";
     const program = new commander.Command();
     // Override unknownOption as convenient way to check fails as expected.
-    jest.spyOn(program, "unknownOption").mockImplementation(() => {
+    vi.spyOn(program, "unknownOption").mockImplementation(() => {
       throw new Error(errorMessage);
     });
 
@@ -30,7 +27,7 @@ describe(".version", () => {
 
   test("when specify default short flag then display version", () => {
     const myVersion = "1.2.3";
-    const writeMock = jest.fn();
+    const writeMock = vi.fn();
     const program = new commander.Command();
     program
       .exitOverride()
@@ -45,7 +42,7 @@ describe(".version", () => {
 
   test("when specify default long flag then display version", () => {
     const myVersion = "1.2.3";
-    const writeMock = jest.fn();
+    const writeMock = vi.fn();
     const program = new commander.Command();
     program
       .exitOverride()
@@ -71,7 +68,7 @@ describe(".version", () => {
 
   test("when specify custom short flag then display version", () => {
     const myVersion = "1.2.3";
-    const writeMock = jest.fn();
+    const writeMock = vi.fn();
     const program = new commander.Command();
     program
       .exitOverride()
@@ -86,7 +83,7 @@ describe(".version", () => {
 
   test("when specify just custom short flag then display version", () => {
     const myVersion = "1.2.3";
-    const writeMock = jest.fn();
+    const writeMock = vi.fn();
     const program = new commander.Command();
     program
       .exitOverride()
@@ -101,7 +98,7 @@ describe(".version", () => {
 
   test("when specify custom long flag then display version", () => {
     const myVersion = "1.2.3";
-    const writeMock = jest.fn();
+    const writeMock = vi.fn();
     const program = new commander.Command();
     program
       .exitOverride()
@@ -116,7 +113,7 @@ describe(".version", () => {
 
   test("when specify just custom long flag then display version", () => {
     const myVersion = "1.2.3";
-    const writeMock = jest.fn();
+    const writeMock = vi.fn();
     const program = new commander.Command();
     program
       .exitOverride()
@@ -143,7 +140,7 @@ describe(".version", () => {
   });
 
   test("when have .version+version and specify version then command called", () => {
-    const actionMock = jest.fn();
+    const actionMock = vi.fn();
     const program = new commander.Command();
     program.version("1.2.3").command("version").action(actionMock);
 
@@ -154,7 +151,7 @@ describe(".version", () => {
 
   test("when have .version+version and specify --version then version displayed", () => {
     const myVersion = "1.2.3";
-    const writeMock = jest.fn();
+    const writeMock = vi.fn();
     const program = new commander.Command();
     program
       .exitOverride()

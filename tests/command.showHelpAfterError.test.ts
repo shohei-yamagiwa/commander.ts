@@ -1,13 +1,10 @@
-// @ts-nocheck
-import { createRequire } from "node:module";
-const require = createRequire(import.meta.url);
-const commander = require("../");
+import * as commander from "../index.ts";
 
 describe("showHelpAfterError with message", () => {
   const customHelpMessage = "See --help";
 
   function makeProgram() {
-    const writeMock = jest.fn();
+    const writeMock = vi.fn();
     const program = new commander.Command();
     program
       .exitOverride()
@@ -109,7 +106,7 @@ describe("showHelpAfterError with message", () => {
 });
 
 test("when showHelpAfterError() and error and then shows full help", () => {
-  const writeMock = jest.fn();
+  const writeMock = vi.fn();
   const program = new commander.Command();
   program
     .exitOverride()

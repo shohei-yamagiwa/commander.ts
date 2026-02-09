@@ -1,14 +1,11 @@
-// @ts-nocheck
-import { createRequire } from "node:module";
-const require = createRequire(import.meta.url);
-const commander = require("../");
+import * as commander from "../index.ts";
 
 describe("variadic option with required value", () => {
   test("when variadic with value missing then error", () => {
     const program = new commander.Command();
     program
       .exitOverride()
-      .configureOutput({ writeErr: jest.fn() })
+      .configureOutput({ writeErr: vi.fn() })
       .option("-r,--required <value...>");
 
     expect(() => {

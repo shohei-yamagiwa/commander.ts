@@ -1,7 +1,4 @@
-// @ts-nocheck
-import { createRequire } from "node:module";
-const require = createRequire(import.meta.url);
-const commander = require("../");
+import * as commander from "../index.ts";
 
 // Testing various help incantations.
 //
@@ -37,7 +34,7 @@ test("when use .description for command then help includes description", () => {
 
 test("when call .help then exit", () => {
   // Optional. Suppress normal output to keep test output clean.
-  const writeSpy = jest
+  const writeSpy = vi
     .spyOn(process.stdout, "write")
     .mockImplementation(() => {});
   const program = new commander.Command();
@@ -50,7 +47,7 @@ test("when call .help then exit", () => {
 
 test("when specify --help then exit", () => {
   // Optional. Suppress normal output to keep test output clean.
-  const writeSpy = jest
+  const writeSpy = vi
     .spyOn(process.stdout, "write")
     .mockImplementation(() => {});
   const program = new commander.Command();
@@ -63,7 +60,7 @@ test("when specify --help then exit", () => {
 
 test("when call help(cb) then display cb output and exit", () => {
   // Using spy to detect custom output
-  const writeSpy = jest
+  const writeSpy = vi
     .spyOn(process.stdout, "write")
     .mockImplementation(() => {});
   const helpReplacement = "reformatted help";
@@ -80,7 +77,7 @@ test("when call help(cb) then display cb output and exit", () => {
 
 test("when call outputHelp(cb) then display cb output", () => {
   // Using spy to detect custom output
-  const writeSpy = jest
+  const writeSpy = vi
     .spyOn(process.stdout, "write")
     .mockImplementation(() => {});
   const helpReplacement = "reformatted help";
@@ -137,7 +134,7 @@ test("when both help flags masked then not displayed in helpInformation", () => 
 });
 
 test("when call .help then output on stdout", () => {
-  const writeSpy = jest
+  const writeSpy = vi
     .spyOn(process.stdout, "write")
     .mockImplementation(() => {});
   const program = new commander.Command();
@@ -150,7 +147,7 @@ test("when call .help then output on stdout", () => {
 });
 
 test("when call .help with { error: true } then output on stderr", () => {
-  const writeSpy = jest
+  const writeSpy = vi
     .spyOn(process.stderr, "write")
     .mockImplementation(() => {});
   const program = new commander.Command();

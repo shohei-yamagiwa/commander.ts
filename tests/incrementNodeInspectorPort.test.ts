@@ -1,12 +1,10 @@
-// @ts-nocheck
-import { createRequire } from "node:module";
-const require = createRequire(import.meta.url);import { dirname } from "node:path";
+import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const childProcess = require("child_process");
-const path = require("path");
-const commander = require("../");
+import childProcess from "node:child_process";
+import * as path from "node:path";
+import * as commander from "../index.ts";
 
 describe("incrementNodeInspectorPort", () => {
   let spawnSpy;
@@ -14,12 +12,12 @@ describe("incrementNodeInspectorPort", () => {
   const oldExecArgv = process.execArgv;
 
   beforeAll(() => {
-    spawnSpy = jest.spyOn(childProcess, "spawn").mockImplementation(() => {
+    spawnSpy = vi.spyOn(childProcess, "spawn").mockImplementation(() => {
       return {
         on: () => {},
       };
     });
-    signalSpy = jest.spyOn(process, "on").mockImplementation(() => {});
+    signalSpy = vi.spyOn(process, "on").mockImplementation(() => {});
   });
 
   afterEach(() => {

@@ -1,7 +1,4 @@
-// @ts-nocheck
-import { createRequire } from "node:module";
-const require = createRequire(import.meta.url);
-const commander = require("../");
+import * as commander from "../index.ts";
 
 function myParseInt(value, dummyPrevious) {
   // parseInt takes a string and a radix
@@ -21,7 +18,7 @@ function commaSeparatedList(value, dummyPrevious) {
 }
 
 test("when option not specified then callback not called", () => {
-  const mockCoercion = jest.fn();
+  const mockCoercion = vi.fn();
   const program = new commander.Command();
   program.option("-i, --integer <n>", "number", mockCoercion);
   program.parse(["node", "test"]);
@@ -36,7 +33,7 @@ test("when option not specified then value is undefined", () => {
 });
 
 test("when starting value is defined and option not specified then callback not called", () => {
-  const mockCoercion = jest.fn();
+  const mockCoercion = vi.fn();
   const program = new commander.Command();
   program.option("-i, --integer <n>", "number", mockCoercion, 1);
   program.parse(["node", "test"]);
@@ -53,7 +50,7 @@ test("when starting value is defined and option not specified then value is star
 });
 
 test("when option specified then callback called with value", () => {
-  const mockCoercion = jest.fn();
+  const mockCoercion = vi.fn();
   const value = "1";
   const program = new commander.Command();
   program.option("-i, --integer <n>", "number", mockCoercion);
@@ -72,7 +69,7 @@ test("when option specified then value is as returned from callback", () => {
 });
 
 test("when starting value is defined and option specified then callback called with value and starting value", () => {
-  const mockCoercion = jest.fn();
+  const mockCoercion = vi.fn();
   const startingValue = 1;
   const value = "2";
   const program = new commander.Command();
@@ -82,7 +79,7 @@ test("when starting value is defined and option specified then callback called w
 });
 
 test("when option specified multiple times then callback called with value and previousValue", () => {
-  const mockCoercion = jest.fn().mockImplementation(() => {
+  const mockCoercion = vi.fn().mockImplementation(() => {
     return "callback";
   });
   const program = new commander.Command();

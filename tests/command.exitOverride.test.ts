@@ -1,11 +1,9 @@
-// @ts-nocheck
-import { createRequire } from "node:module";
-const require = createRequire(import.meta.url);import { dirname } from "node:path";
+import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const commander = require("../");
-const path = require("path");
+import * as commander from "../index.ts";
+import * as path from "node:path";
 
 // Test details of the exitOverride errors.
 // The important checks are the exitCode and code which are intended to be stable for
@@ -26,7 +24,7 @@ describe(".exitOverride and error details", () => {
   let stderrSpy;
 
   beforeAll(() => {
-    stderrSpy = jest
+    stderrSpy = vi
       .spyOn(process.stderr, "write")
       .mockImplementation(() => {});
   });
@@ -218,7 +216,7 @@ describe(".exitOverride and error details", () => {
   });
 
   test("when specify --help then throw CommanderError", () => {
-    const writeSpy = jest
+    const writeSpy = vi
       .spyOn(process.stdout, "write")
       .mockImplementation(() => {});
     const program = new commander.Command();
@@ -255,7 +253,7 @@ describe(".exitOverride and error details", () => {
   });
 
   test("when specify --version then throw CommanderError", () => {
-    const stdoutSpy = jest
+    const stdoutSpy = vi
       .spyOn(process.stdout, "write")
       .mockImplementation(() => {});
     const myVersion = "1.2.3";
@@ -443,7 +441,7 @@ describe(".exitOverride and error details", () => {
 });
 
 test("when no override and error then exit(1)", () => {
-  const exitSpy = jest.spyOn(process, "exit").mockImplementation(() => {});
+  const exitSpy = vi.spyOn(process, "exit").mockImplementation(() => {});
   const program = new commander.Command();
   program.configureOutput({ outputError: () => {} });
   program.parse(["--unknownOption"], { from: "user" });

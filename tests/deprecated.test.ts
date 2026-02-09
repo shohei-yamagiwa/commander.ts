@@ -1,7 +1,4 @@
-// @ts-nocheck
-import { createRequire } from "node:module";
-const require = createRequire(import.meta.url);
-const commander = require("../");
+import * as commander from "../index.ts";
 
 // Test for backwards compatible behaviour of deprecated features that don't fit in elsewhere.
 // We keep deprecated features working (when not too difficult) to avoid breaking existing code

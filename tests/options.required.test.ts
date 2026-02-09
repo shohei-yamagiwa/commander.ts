@@ -1,7 +1,4 @@
-// @ts-nocheck
-import { createRequire } from "node:module";
-const require = createRequire(import.meta.url);
-const commander = require("../");
+import * as commander from "../index.ts";
 
 // option with required value, no default
 describe("option with required value, no default", () => {
@@ -22,7 +19,7 @@ describe("option with required value, no default", () => {
 
   test("when option value not specified then error", () => {
     // Arrange. Mock error routine to allow interception.
-    const mockOptionMissingArgument = jest.fn(() => {
+    const mockOptionMissingArgument = vi.fn(() => {
       throw new Error("optionMissingArgument");
     });
     const program = new commander.Command();
@@ -60,7 +57,7 @@ describe("option with required value, with default", () => {
 
   test("when option value not specified then error", () => {
     // Arrange. Mock error routine to allow interception.
-    const mockOptionMissingArgument = jest.fn(() => {
+    const mockOptionMissingArgument = vi.fn(() => {
       throw new Error("optionMissingArgument");
     });
     const defaultValue = "default";

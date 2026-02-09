@@ -1,7 +1,4 @@
-// @ts-nocheck
-import { createRequire } from "node:module";
-const require = createRequire(import.meta.url);
-const commander = require("../");
+import * as commander from "../index.ts";
 
 describe("helpOption", () => {
   let writeSpy;
@@ -9,8 +6,8 @@ describe("helpOption", () => {
 
   beforeAll(() => {
     // Optional. Suppress expected output to keep test output clean.
-    writeSpy = jest.spyOn(process.stdout, "write").mockImplementation(() => {});
-    writeErrorSpy = jest
+    writeSpy = vi.spyOn(process.stdout, "write").mockImplementation(() => {});
+    writeErrorSpy = vi
       .spyOn(process.stderr, "write")
       .mockImplementation(() => {});
   });

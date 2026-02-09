@@ -1,13 +1,10 @@
-// @ts-nocheck
-import { createRequire } from "node:module";
-const require = createRequire(import.meta.url);
-const commander = require("../");
+import * as commander from "../index.ts";
 
 // Testing variadic arguments. Testing all the action arguments, but could test just variadicArg.
 
 describe("variadic argument", () => {
   test("when no extra arguments specified for program then variadic arg is empty array", () => {
-    const actionMock = jest.fn();
+    const actionMock = vi.fn();
     const program = new commander.Command();
     program.argument("<id>").argument("[variadicArg...]").action(actionMock);
 
@@ -17,7 +14,7 @@ describe("variadic argument", () => {
   });
 
   test("when extra arguments specified for program then variadic arg is array of values", () => {
-    const actionMock = jest.fn();
+    const actionMock = vi.fn();
     const program = new commander.Command();
     program
       .addArgument(new commander.Argument("<id>"))
@@ -36,7 +33,7 @@ describe("variadic argument", () => {
   });
 
   test("when no extra arguments specified for command then variadic arg is empty array", () => {
-    const actionMock = jest.fn();
+    const actionMock = vi.fn();
     const program = new commander.Command();
     const cmd = program.command("sub [variadicArg...]").action(actionMock);
 
@@ -46,7 +43,7 @@ describe("variadic argument", () => {
   });
 
   test("when extra arguments specified for command then variadic arg is array of values", () => {
-    const actionMock = jest.fn();
+    const actionMock = vi.fn();
     const program = new commander.Command();
     const cmd = program.command("sub [variadicArg...]").action(actionMock);
     const extraArguments = ["a", "b", "c"];

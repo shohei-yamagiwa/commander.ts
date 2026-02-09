@@ -1,13 +1,11 @@
-// @ts-nocheck
-import { createRequire } from "node:module";
-const require = createRequire(import.meta.url);import { dirname } from "node:path";
+import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
-const childProcess = require("child_process");
-const commander = require("../");
-const path = require("path");
-const util = require("util");
+import * as childProcess from "node:child_process";
+import * as commander from "../index.ts";
+import * as path from "node:path";
+import * as util from "node:util";
 
 const execFileAsync = util.promisify(childProcess.execFile);
 

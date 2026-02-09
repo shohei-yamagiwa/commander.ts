@@ -1,11 +1,8 @@
-// @ts-nocheck
-import { createRequire } from "node:module";
-const require = createRequire(import.meta.url);
-const commander = require("../");
+import * as commander from "../index.ts";
 
 test("when error called with message then message displayed on stderr", () => {
-  const exitSpy = jest.spyOn(process, "exit").mockImplementation(() => {});
-  const stderrSpy = jest
+  const exitSpy = vi.spyOn(process, "exit").mockImplementation(() => {});
+  const stderrSpy = vi
     .spyOn(process.stderr, "write")
     .mockImplementation(() => {});
 
@@ -19,7 +16,7 @@ test("when error called with message then message displayed on stderr", () => {
 });
 
 test("when error called with no exitCode then process.exit(1)", () => {
-  const exitSpy = jest.spyOn(process, "exit").mockImplementation(() => {});
+  const exitSpy = vi.spyOn(process, "exit").mockImplementation(() => {});
 
   const program = new commander.Command();
   program.configureOutput({
@@ -33,7 +30,7 @@ test("when error called with no exitCode then process.exit(1)", () => {
 });
 
 test("when error called with exitCode 2 then process.exit(2)", () => {
-  const exitSpy = jest.spyOn(process, "exit").mockImplementation(() => {});
+  const exitSpy = vi.spyOn(process, "exit").mockImplementation(() => {});
 
   const program = new commander.Command();
   program.configureOutput({
