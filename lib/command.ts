@@ -1159,6 +1159,8 @@ Expecting one of '${allowedValues.join("', '")}'`);
     }
     if (source !== undefined) {
       this._optionValueSources[key] = source;
+    } else {
+      delete this._optionValueSources[key];
     }
     return this;
   }
