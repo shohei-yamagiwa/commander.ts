@@ -1,13 +1,13 @@
-const commander = require("../");
+import { Command, Help } from "../index.ts";
 
 test("when override createCommand then affects help", () => {
-  class MyHelp extends commander.Help {
-    formatHelp(cmd, helper) {
+  class MyHelp extends Help {
+    formatHelp() {
       return "custom";
     }
   }
 
-  class MyCommand extends commander.Command {
+  class MyCommand extends Command {
     createHelp() {
       return Object.assign(new MyHelp(), this.configureHelp());
     }

@@ -1,4 +1,4 @@
-const {
+import {
   program,
   Command,
   Option,
@@ -10,14 +10,14 @@ const {
   createCommand,
   createOption,
   createArgument,
-} = require("../index.js");
+} from "../index.ts";
 
 // Do some testing of the default export(s).
 // Similar tests to ts-imports.test.ts and esm-imports-test.js.
 
 /* eslint jest/expect-expect: ["error", { "assertFunctionNames": ["expect", "checkClass"] }] */
 
-function checkClass(obj, name) {
+function checkClass(obj: object, name: string) {
   expect(typeof obj).toEqual("object");
   expect(obj.constructor.name).toEqual(name);
 }

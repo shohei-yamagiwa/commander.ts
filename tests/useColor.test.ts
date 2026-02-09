@@ -1,9 +1,9 @@
-const { useColor } = require("../lib/command.js");
+import { useColor } from "../lib/command.ts";
 
 describe("internal useColor environment variable support", () => {
-  let holdNoColor = process.env.NO_COLOR;
-  let holdForceColor = process.env.FORCE_COLOR;
-  let holdCliColorForce = process.env.CLICOLOR_FORCE;
+  const holdNoColor = process.env.NO_COLOR;
+  const holdForceColor = process.env.FORCE_COLOR;
+  const holdCliColorForce = process.env.CLICOLOR_FORCE;
 
   beforeEach(() => {
     delete process.env.NO_COLOR;
@@ -76,7 +76,7 @@ describe("internal useColor environment variable support", () => {
     ["1", true],
     ["2", true],
     ["3", true],
-  ])("when FORCE_COLOR=%s then returns %s", (value, result) => {
+  ])("when FORCE_COLOR=%s then returns %s", (value: string, result: boolean) => {
     process.env.FORCE_COLOR = value;
     expect(useColor()).toBe(result);
   });

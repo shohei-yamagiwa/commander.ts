@@ -1,4 +1,4 @@
-const { stripColor } = require("../lib/help");
+import { stripColor } from "../lib/help.ts";
 
 // https://en.wikipedia.org/wiki/ANSI_escape_code#SGR_(Select_Graphic_Rendition)_parameters
 
