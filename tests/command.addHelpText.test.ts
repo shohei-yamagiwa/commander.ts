@@ -3,10 +3,9 @@ import * as commander from "../index.ts";
 // Using outputHelp to simplify testing.
 
 describe("program calls to addHelpText", () => {
-  let writeSpy;
-
+  let writeSpy: ReturnType<typeof vi.spyOn>;
   beforeAll(() => {
-    writeSpy = vi.spyOn(process.stdout, "write").mockImplementation(() => {});
+    writeSpy = vi.spyOn(process.stdout, "write").mockImplementation(() => true);
   });
 
   afterEach(() => {
@@ -87,10 +86,9 @@ describe("program calls to addHelpText", () => {
 });
 
 describe("program and subcommand calls to addHelpText", () => {
-  let writeSpy;
-
+  let writeSpy: ReturnType<typeof vi.spyOn>;
   beforeAll(() => {
-    writeSpy = vi.spyOn(process.stdout, "write").mockImplementation(() => {});
+    writeSpy = vi.spyOn(process.stdout, "write").mockImplementation(() => true);
   });
 
   afterEach(() => {
@@ -139,16 +137,16 @@ describe("program and subcommand calls to addHelpText", () => {
 });
 
 describe("context checks with full parse", () => {
-  let stdoutSpy;
-  let stderrSpy;
-
+  type HelpTextContext = { error: boolean; command: commander.Command };
+  let stdoutSpy: ReturnType<typeof vi.spyOn>;
+  let stderrSpy: ReturnType<typeof vi.spyOn>;
   beforeAll(() => {
     stdoutSpy = vi
       .spyOn(process.stdout, "write")
-      .mockImplementation(() => {});
+      .mockImplementation(() => true);
     stderrSpy = vi
       .spyOn(process.stderr, "write")
-      .mockImplementation(() => {});
+      .mockImplementation(() => true);
   });
 
   afterEach(() => {
@@ -180,7 +178,7 @@ describe("context checks with full parse", () => {
   });
 
   test("when help requested then context.error is false", () => {
-    let context;
+    let context: HelpTextContext | undefined;
     const program = new commander.Command();
     program.exitOverride().addHelpText("before", (contextParam) => {
       context = contextParam;
@@ -188,11 +186,11 @@ describe("context checks with full parse", () => {
     expect(() => {
       program.parse(["--help"], { from: "user" });
     }).toThrow();
-    expect(context.error).toBe(false);
+    expect(context?.error).toBe(false);
   });
 
   test("when help for error then context.error is true", () => {
-    let context;
+    let context: HelpTextContext | undefined;
     const program = new commander.Command();
     program
       .exitOverride()
@@ -203,11 +201,11 @@ describe("context checks with full parse", () => {
     expect(() => {
       program.parse([], { from: "user" });
     }).toThrow();
-    expect(context.error).toBe(true);
+    expect(context?.error).toBe(true);
   });
 
   test("when help on program then context.command is program", () => {
-    let context;
+    let context: HelpTextContext | undefined;
     const program = new commander.Command();
     program.exitOverride().addHelpText("before", (contextParam) => {
       context = contextParam;
@@ -215,11 +213,11 @@ describe("context checks with full parse", () => {
     expect(() => {
       program.parse(["--help"], { from: "user" });
     }).toThrow();
-    expect(context.command).toBe(program);
+    expect(context?.command).toBe(program);
   });
 
   test('when help on subcommand and "before" subcommand then context.command is subcommand', () => {
-    let context;
+    let context: HelpTextContext | undefined;
     const program = new commander.Command();
     program.exitOverride();
     const sub = program.command("sub").addHelpText("before", (contextParam) => {
@@ -228,11 +226,11 @@ describe("context checks with full parse", () => {
     expect(() => {
       program.parse(["sub", "--help"], { from: "user" });
     }).toThrow();
-    expect(context.command).toBe(sub);
+    expect(context?.command).toBe(sub);
   });
 
   test('when help on subcommand and "beforeAll" on program then context.command is subcommand', () => {
-    let context;
+    let context: HelpTextContext | undefined;
     const program = new commander.Command();
     program.exitOverride().addHelpText("beforeAll", (contextParam) => {
       context = contextParam;
@@ -241,6 +239,8 @@ describe("context checks with full parse", () => {
     expect(() => {
       program.parse(["sub", "--help"], { from: "user" });
     }).toThrow();
-    expect(context.command).toBe(sub);
+    expect(context?.command).toBe(sub);
   });
 });
+
+

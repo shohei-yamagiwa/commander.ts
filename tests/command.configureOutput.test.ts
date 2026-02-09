@@ -4,7 +4,7 @@ import * as process from "node:process";
 test("when default writeErr() then error on stderr", () => {
   const writeSpy = vi
     .spyOn(process.stderr, "write")
-    .mockImplementation(() => {});
+    .mockImplementation(() => true);
   const program = new commander.Command();
   program.exitOverride();
 
@@ -21,7 +21,7 @@ test("when default writeErr() then error on stderr", () => {
 test("when custom writeErr() then error on custom output", () => {
   const writeSpy = vi
     .spyOn(process.stderr, "write")
-    .mockImplementation(() => {});
+    .mockImplementation(() => true);
   const customWrite = vi.fn();
   const program = new commander.Command();
   program.exitOverride().configureOutput({ writeErr: customWrite });
@@ -40,7 +40,7 @@ test("when custom writeErr() then error on custom output", () => {
 test("when default write() then version on stdout", () => {
   const writeSpy = vi
     .spyOn(process.stdout, "write")
-    .mockImplementation(() => {});
+    .mockImplementation(() => true);
   const program = new commander.Command();
   program.exitOverride().version("1.2.3");
 
@@ -55,7 +55,7 @@ test("when default write() then version on stdout", () => {
 test("when custom write() then version on custom output", () => {
   const writeSpy = vi
     .spyOn(process.stdout, "write")
-    .mockImplementation(() => {});
+    .mockImplementation(() => true);
   const customWrite = vi.fn();
   const program = new commander.Command();
   program
@@ -75,7 +75,7 @@ test("when custom write() then version on custom output", () => {
 test("when default write() then help on stdout", () => {
   const writeSpy = vi
     .spyOn(process.stdout, "write")
-    .mockImplementation(() => {});
+    .mockImplementation(() => true);
   const program = new commander.Command();
   program.outputHelp();
 
@@ -86,7 +86,7 @@ test("when default write() then help on stdout", () => {
 test("when custom write() then help error on custom output", () => {
   const writeSpy = vi
     .spyOn(process.stdout, "write")
-    .mockImplementation(() => {});
+    .mockImplementation(() => true);
   const customWrite = vi.fn();
   const program = new commander.Command();
   program.configureOutput({ writeOut: customWrite });
@@ -100,7 +100,7 @@ test("when custom write() then help error on custom output", () => {
 test("when default writeErr then help error on stderr", () => {
   const writeSpy = vi
     .spyOn(process.stderr, "write")
-    .mockImplementation(() => {});
+    .mockImplementation(() => true);
   const program = new commander.Command();
   program.outputHelp({ error: true });
 
@@ -111,7 +111,7 @@ test("when default writeErr then help error on stderr", () => {
 test("when custom writeErr then help error on custom output", () => {
   const writeSpy = vi
     .spyOn(process.stderr, "write")
-    .mockImplementation(() => {});
+    .mockImplementation(() => true);
   const customWrite = vi.fn();
   const program = new commander.Command();
   program.configureOutput({ writeErr: customWrite });
@@ -252,7 +252,7 @@ test("when custom getErrHelpWidth and configureHelp:helpWidth then help error he
 test("when no custom setup and call formatHelp direct then effective helpWidth is fallback 80", () => {
   // Not an important case, but filling out testing coverage.
   const helper = new commander.Help();
-  let wrapWidth;
+  let wrapWidth: number | undefined;
   helper.boxWrap = (str, width) => {
     wrapWidth = wrapWidth ?? width;
     return "";
@@ -267,7 +267,7 @@ test("when no custom setup and call formatHelp direct then effective helpWidth i
 test("when no custom setup and call formatItem direct then effective helpWidth is fallback 80", () => {
   // Not an important case, but filling out testing coverage.
   const helper = new commander.Help();
-  let wrapWidth;
+  let wrapWidth: number | undefined;
   helper.boxWrap = (str, width) => {
     wrapWidth = wrapWidth ?? width;
     return "";
@@ -315,7 +315,7 @@ test("when custom outputErr and error then outputErr called", () => {
 });
 
 test("when custom outputErr and writeErr and error then outputErr passed writeErr", () => {
-  const writeErr = () => vi.fn();
+  const writeErr = vi.fn();
   const outputError = vi.fn();
   const program = new commander.Command();
   program.exitOverride().configureOutput({ writeErr, outputError });
@@ -340,7 +340,10 @@ test("when configureOutput after copyInheritedSettings then original unchanged",
   expect(program.configureOutput().getOutHelpWidth()).toBe(80);
 });
 
-describe.each([["getOutHasColors"], ["getErrHasColors"]])(
+describe.each<[ "getOutHasColors" | "getErrHasColors" ]>([
+  ["getOutHasColors"],
+  ["getErrHasColors"],
+])(
   "%s",
   (configProperty) => {
     // Tried and failed to mock/modify process.stdout.isTTY to test that part of implementation.
@@ -350,7 +353,7 @@ describe.each([["getOutHasColors"], ["getErrHasColors"]])(
       configProperty
     ];
 
-    test.each([
+    test.each<[boolean, "NO_COLOR" | "FORCE_COLOR" | "CLICOLOR_FORCE", boolean]>([
       [true, "NO_COLOR", false],
       [false, "FORCE_COLOR", true],
       [false, "CLICOLOR_FORCE", true],
@@ -363,3 +366,4 @@ describe.each([["getOutHasColors"], ["getErrHasColors"]])(
     });
   },
 );
+

@@ -32,7 +32,7 @@ test("when configure with unknown property then helper passed to formatHelp has 
   program.configureHelp({
     mySecretValue: "secret",
     formatHelp: (cmd, helper) => {
-      return helper.mySecretValue;
+      return helper.mySecretValue as string;
     },
   });
   expect(program.helpInformation()).toEqual("secret");

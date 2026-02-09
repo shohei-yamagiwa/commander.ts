@@ -4,12 +4,11 @@ import * as commander from "../index.ts";
 
 describe("unknownOption", () => {
   // Optional. Use internal knowledge to suppress output to keep test output clean.
-  let writeErrorSpy;
-
+  let writeErrorSpy: ReturnType<typeof vi.spyOn>;
   beforeAll(() => {
     writeErrorSpy = vi
       .spyOn(process.stderr, "write")
-      .mockImplementation(() => {});
+      .mockImplementation(() => true);
   });
 
   afterEach(() => {
@@ -111,3 +110,5 @@ describe("unknownOption", () => {
     expect(caughtErr.code).toBe("commander.unknownOption");
   });
 });
+
+

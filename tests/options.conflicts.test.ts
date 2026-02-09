@@ -68,7 +68,7 @@ describe("command with conflicting options", () => {
   test("should report the env variable as the conflicting option source, when conflicting option is set", () => {
     const { program } = makeProgram();
 
-    process.env.SILENT = true;
+    process.env.SILENT = "true";
 
     expect(() => {
       program.parse("node test.js foo --json".split(" "));
@@ -80,7 +80,7 @@ describe("command with conflicting options", () => {
   test("should report the env variable as the configured option source, when configured option is set", () => {
     const { program } = makeProgram();
 
-    process.env.JSON = true;
+    process.env.JSON = "true";
 
     expect(() => {
       program.parse("node test.js foo --silent".split(" "));
@@ -92,8 +92,8 @@ describe("command with conflicting options", () => {
   test("should report both env variables as sources, when configured option and conflicting option are set", () => {
     const { program } = makeProgram();
 
-    process.env.SILENT = true;
-    process.env.JSON = true;
+    process.env.SILENT = "true";
+    process.env.JSON = "true";
 
     expect(() => {
       program.parse("node test.js foo".split(" "));
@@ -139,7 +139,7 @@ describe("command with conflicting options", () => {
   test("should report conflict on negated option env variable", () => {
     const { program } = makeProgram();
 
-    process.env.NO_COLOR = true;
+    process.env.NO_COLOR = "true";
 
     program
       .command("bar")
@@ -347,3 +347,4 @@ describe("command with conflicting options", () => {
     expect(exception.code).toBe("commander.conflictingOption");
   });
 });
+

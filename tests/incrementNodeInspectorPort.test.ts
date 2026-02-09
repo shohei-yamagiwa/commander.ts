@@ -7,17 +7,17 @@ import * as path from "node:path";
 import * as commander from "../index.ts";
 
 describe("incrementNodeInspectorPort", () => {
-  let spawnSpy;
-  let signalSpy;
+  let spawnSpy: ReturnType<typeof vi.spyOn>;
+  let signalSpy: ReturnType<typeof vi.spyOn>;
   const oldExecArgv = process.execArgv;
 
   beforeAll(() => {
     spawnSpy = vi.spyOn(childProcess, "spawn").mockImplementation(() => {
       return {
         on: () => {},
-      };
+      } as any;
     });
-    signalSpy = vi.spyOn(process, "on").mockImplementation(() => {});
+    signalSpy = vi.spyOn(process, "on").mockImplementation(() => process);
   });
 
   afterEach(() => {
@@ -39,7 +39,7 @@ describe("incrementNodeInspectorPort", () => {
     return program;
   }
 
-  function extractMockExecArgs(mock) {
+  function extractMockExecArgs(mock: any) {
     return mock.mock.calls[0][1].slice(0, -1);
   }
 
@@ -139,3 +139,5 @@ describe("incrementNodeInspectorPort", () => {
     expect(execArgs).toEqual(["--frozen-intrinsics "]);
   });
 });
+
+

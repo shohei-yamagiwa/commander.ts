@@ -5,6 +5,7 @@ import type { Option } from "./option.ts";
 
 // Although this is a class, methods are static in style to allow override using subclass or just functions.
 class Help {
+  [key: string]: unknown;
   public helpWidth: number | undefined;
   public minWidthToWrap: number;
   public sortSubcommands: boolean;

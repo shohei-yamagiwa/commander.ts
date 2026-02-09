@@ -14,7 +14,7 @@ describe(".command('*')", () => {
   test("when no arguments then asterisk action not called", () => {
     const writeMock = vi
       .spyOn(process.stderr, "write")
-      .mockImplementation(() => {});
+      .mockImplementation(() => true);
     const mockAction = vi.fn();
     const program = new commander.Command();
     program
@@ -140,3 +140,4 @@ describe(".on('command:*')", () => {
     expect(mockAction).toHaveBeenCalled();
   });
 });
+

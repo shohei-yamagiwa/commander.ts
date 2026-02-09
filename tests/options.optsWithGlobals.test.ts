@@ -18,12 +18,13 @@ describe("optsWithGlobals", () => {
 
   test("when options in sub and program then optsWithGlobals includes both", () => {
     const program = new commander.Command();
-    let mergedOptions;
+    let mergedOptions: Record<string, unknown> | undefined;
     program.option("-g, --global <value>");
     program
       .command("sub")
       .option("-l, --local <value)")
-      .action((options, cmd) => {
+      .action((...args) => {
+        const cmd = args[1] as commander.Command;
         mergedOptions = cmd.optsWithGlobals();
       });
 
@@ -33,13 +34,14 @@ describe("optsWithGlobals", () => {
 
   test("when options in sub and subsub then optsWithGlobals includes both", () => {
     const program = new commander.Command();
-    let mergedOptions;
+    let mergedOptions: Record<string, unknown> | undefined;
     program
       .command("sub")
       .option("-g, --global <value)")
       .command("subsub")
       .option("-l, --local <value)")
-      .action((options, cmd) => {
+      .action((...args) => {
+        const cmd = args[1] as commander.Command;
         mergedOptions = cmd.optsWithGlobals();
       });
 
@@ -51,12 +53,13 @@ describe("optsWithGlobals", () => {
 
   test("when same named option in sub and program then optsWithGlobals includes global", () => {
     const program = new commander.Command();
-    let mergedOptions;
+    let mergedOptions: Record<string, unknown> | undefined;
     program.option("-c, --common <value>").enablePositionalOptions();
     program
       .command("sub")
       .option("-c, --common <value)")
-      .action((options, cmd) => {
+      .action((...args) => {
+        const cmd = args[1] as commander.Command;
         mergedOptions = cmd.optsWithGlobals();
       });
 

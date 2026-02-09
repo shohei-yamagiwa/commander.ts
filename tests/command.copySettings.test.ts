@@ -60,8 +60,8 @@ describe("copyInheritedSettings property tests", () => {
     cmd.helpCommand(true); // force enable
     const helpCommand = cmd._getHelpCommand();
     expect(helpCommand).toBeTruthy();
-    expect(helpCommand.name()).toBe("HELP");
-    expect(helpCommand.description()).toBe("ddd");
+    expect(helpCommand!.name()).toBe("HELP");
+    expect(helpCommand!.description()).toBe("ddd");
   });
 
   test("when copyInheritedSettings then does not copy help enable override", () => {

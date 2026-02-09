@@ -7,7 +7,7 @@ test("when no command specified and executable then display help", () => {
   // Optional. Suppress normal output to keep test output clean.
   const writeSpy = vi
     .spyOn(process.stderr, "write")
-    .mockImplementation(() => {});
+    .mockImplementation(() => true);
   const program = new commander.Command();
   program
     .exitOverride((err) => {
@@ -19,3 +19,4 @@ test("when no command specified and executable then display help", () => {
   }).toThrow("(outputHelp)");
   writeSpy.mockClear();
 });
+

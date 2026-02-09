@@ -3,15 +3,14 @@ import { Command, Option } from "../index.ts";
 // More complete tests are in command.helpOption.test.js.
 
 describe("addHelpOption", () => {
-  let writeSpy;
-  let writeErrorSpy;
-
+  let writeSpy: ReturnType<typeof vi.spyOn>;
+  let writeErrorSpy: ReturnType<typeof vi.spyOn>;
   beforeAll(() => {
     // Optional. Suppress expected output to keep test output clean.
-    writeSpy = vi.spyOn(process.stdout, "write").mockImplementation(() => {});
+    writeSpy = vi.spyOn(process.stdout, "write").mockImplementation(() => true);
     writeErrorSpy = vi
       .spyOn(process.stderr, "write")
-      .mockImplementation(() => {});
+      .mockImplementation(() => true);
   });
 
   afterEach(() => {
@@ -51,3 +50,5 @@ describe("addHelpOption", () => {
     expect(helpInfo).not.toMatch(/help/);
   });
 });
+
+

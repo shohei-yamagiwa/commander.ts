@@ -99,12 +99,11 @@ describe("required program option with mandatory value specified", () => {
 
 describe("required program option with mandatory value not specified", () => {
   // Optional. Use internal knowledge to suppress output to keep test output clean.
-  let writeErrorSpy;
-
+  let writeErrorSpy: ReturnType<typeof vi.spyOn>;
   beforeAll(() => {
     writeErrorSpy = vi
       .spyOn(process.stderr, "write")
-      .mockImplementation(() => {});
+      .mockImplementation(() => true);
   });
 
   afterEach(() => {
@@ -162,7 +161,7 @@ describe("required program option with mandatory value not specified", () => {
 describe("required command option with mandatory value specified", () => {
   test("when command has required value specified then no error and option has specified value", () => {
     const program = new commander.Command();
-    let cmdOptions;
+    let cmdOptions: any;
     program
       .exitOverride()
       .command("sub")
@@ -173,7 +172,7 @@ describe("required command option with mandatory value specified", () => {
 
     program.parse(["node", "test", "sub", "--subby", "blue"]);
 
-    expect(cmdOptions.subby).toBe("blue");
+    expect(cmdOptions?.subby).toBe("blue");
   });
 
   test("when command has required value specified using env then no error and option has specified value", () => {
@@ -196,12 +195,11 @@ describe("required command option with mandatory value specified", () => {
 
 describe("required command option with mandatory value not specified", () => {
   // Optional. Use internal knowledge to suppress output to keep test output clean.
-  let writeErrorSpy;
-
+  let writeErrorSpy: ReturnType<typeof vi.spyOn>;
   beforeAll(() => {
     writeErrorSpy = vi
       .spyOn(process.stderr, "write")
-      .mockImplementation(() => {});
+      .mockImplementation(() => true);
   });
 
   afterEach(() => {
@@ -242,10 +240,9 @@ describe("required command option with mandatory value not specified", () => {
 
 describe("missing mandatory option but help requested", () => {
   // Optional. Use internal knowledge to suppress output to keep test output clean.
-  let writeSpy;
-
+  let writeSpy: ReturnType<typeof vi.spyOn>;
   beforeAll(() => {
-    writeSpy = vi.spyOn(process.stdout, "write").mockImplementation(() => {});
+    writeSpy = vi.spyOn(process.stdout, "write").mockImplementation(() => true);
   });
 
   afterEach(() => {
@@ -288,3 +285,6 @@ describe("missing mandatory option but help requested", () => {
     expect(caughtErr.code).toEqual("commander.helpDisplayed");
   });
 });
+
+
+

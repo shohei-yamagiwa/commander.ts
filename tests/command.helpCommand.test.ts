@@ -55,14 +55,13 @@ describe("help command listed in helpInformation", () => {
 
 describe("help command processed on correct command", () => {
   // Use internal knowledge to suppress output to keep test output clean.
-  let writeErrorSpy;
-  let writeSpy;
-
+  let writeErrorSpy: ReturnType<typeof vi.spyOn>;
+  let writeSpy: ReturnType<typeof vi.spyOn>;
   beforeAll(() => {
     writeErrorSpy = vi
       .spyOn(process.stderr, "write")
-      .mockImplementation(() => {});
-    writeSpy = vi.spyOn(process.stdout, "write").mockImplementation(() => {});
+      .mockImplementation(() => true);
+    writeSpy = vi.spyOn(process.stdout, "write").mockImplementation(() => true);
   });
 
   afterEach(() => {
@@ -178,3 +177,5 @@ describe("help command processed on correct command", () => {
     }).toThrow("sub help");
   });
 });
+
+

@@ -1,10 +1,10 @@
 import { Command } from "../index.ts";
 
-function getSuggestion(program, arg) {
+function getSuggestion(program: Command, arg: string) {
   let message = "";
   program.exitOverride().configureOutput({
     writeErr: (str) => {
-      message = str;
+      message = String(str);
     },
   });
 

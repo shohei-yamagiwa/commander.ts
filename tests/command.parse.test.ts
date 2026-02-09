@@ -47,20 +47,20 @@ describe(".parse() args from", () => {
   test('when args from "electron" and not default app then app/args', () => {
     const program = new commander.Command();
     program.argument("[args...]");
-    const hold = process.defaultApp;
-    process.defaultApp = undefined;
+    const hold = (process as any).defaultApp;
+    (process as any).defaultApp = undefined;
     program.parse("customApp user".split(" "), { from: "electron" });
-    process.defaultApp = hold;
+    (process as any).defaultApp = hold;
     expect(program.args).toEqual(["user"]);
   });
 
   test('when args from "electron" and default app then app/script/args', () => {
     const program = new commander.Command();
     program.argument("[args...]");
-    const hold = process.defaultApp;
-    process.defaultApp = true;
+    const hold = (process as any).defaultApp;
+    (process as any).defaultApp = true;
     program.parse("electron script user".split(" "), { from: "electron" });
-    process.defaultApp = hold;
+    (process as any).defaultApp = hold;
     expect(program.args).toEqual(["user"]);
   });
 
@@ -122,7 +122,7 @@ test("when parse strings instead of array then throw", () => {
   const program = new commander.Command();
   program.argument("[args...]");
   expect(() => {
-    program.parse("node", "test");
+    program.parse("node" as any, "test" as any);
   }).toThrow();
 });
 
@@ -266,8 +266,8 @@ describe(".parse() called multiple times", () => {
   });
 
   test("when use collect example then option value resets", () => {
-    function collect(value, previous) {
-      return previous.concat([value]);
+    function collect(value: string, previous: unknown) {
+      return (previous as string[]).concat([value]);
     }
     const program = new commander.Command();
     program.option("-c, --collect <value>", "repeatable value", collect, []);
@@ -280,8 +280,8 @@ describe(".parse() called multiple times", () => {
   });
 
   test("when use increaseVerbosity example then option value resets", () => {
-    function increaseVerbosity(dummyValue, previous) {
-      return previous + 1;
+    function increaseVerbosity(dummyValue: string, previous: unknown) {
+      return (previous as number) + 1;
     }
     const program = new commander.Command();
     program.option(
@@ -380,10 +380,10 @@ describe(".parse() called multiple times", () => {
       parseFloat,
     );
 
-    program.parse([123], { from: "user" });
+    program.parse(["123"], { from: "user" });
     expect(program.processedArgs).toEqual([123]);
 
-    program.parse([456], { from: "user" });
+    program.parse(["456"], { from: "user" });
     expect(program.processedArgs).toEqual([456]);
   });
 

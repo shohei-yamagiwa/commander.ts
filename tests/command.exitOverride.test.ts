@@ -12,7 +12,7 @@ import * as path from "node:path";
 
 /* eslint jest/expect-expect: ["error", { "assertFunctionNames": ["expect", "expectCommanderError"] }] */
 
-function expectCommanderError(err, exitCode, code, message) {
+function expectCommanderError(err: any, exitCode: number, code: string, message: string) {
   expect(err).toBeInstanceOf(commander.CommanderError);
   expect(err.exitCode).toBe(exitCode);
   expect(err.code).toBe(code);
@@ -21,12 +21,11 @@ function expectCommanderError(err, exitCode, code, message) {
 
 describe(".exitOverride and error details", () => {
   // Use internal knowledge to suppress output to keep test output clean.
-  let stderrSpy;
-
+  let stderrSpy: ReturnType<typeof vi.spyOn>;
   beforeAll(() => {
     stderrSpy = vi
       .spyOn(process.stderr, "write")
-      .mockImplementation(() => {});
+      .mockImplementation(() => true);
   });
 
   afterEach(() => {
@@ -41,7 +40,7 @@ describe(".exitOverride and error details", () => {
     const program = new commander.Command();
     program.exitOverride();
 
-    let caughtErr;
+    let caughtErr: any;
     try {
       program.parse(["node", "test", "-m"]);
     } catch (err) {
@@ -61,7 +60,7 @@ describe(".exitOverride and error details", () => {
     const program = new commander.Command();
     program.name("prog").exitOverride().command("sub");
 
-    let caughtErr;
+    let caughtErr: any;
     try {
       program.parse(["node", "test", "oops"]);
     } catch (err) {
@@ -89,7 +88,7 @@ describe(".exitOverride and error details", () => {
       throw customError;
     });
 
-    let caughtErr;
+    let caughtErr: any;
     try {
       program.parse(["node", "test", "-m"]);
     } catch (err) {
@@ -109,7 +108,7 @@ describe(".exitOverride and error details", () => {
     const program = new commander.Command();
     program.exitOverride().option(optionFlags, "add pepper");
 
-    let caughtErr;
+    let caughtErr: any;
     try {
       program.parse(["node", "test", "--pepper"]);
     } catch (err) {
@@ -132,7 +131,7 @@ describe(".exitOverride and error details", () => {
       .command("compress <arg-name>")
       .action(() => {});
 
-    let caughtErr;
+    let caughtErr: any;
     try {
       program.parse(["node", "test", "compress"]);
     } catch (err) {
@@ -152,7 +151,7 @@ describe(".exitOverride and error details", () => {
     const program = new commander.Command();
     program.exitOverride().argument("<arg-name>");
 
-    let caughtErr;
+    let caughtErr: any;
     try {
       program.parse(["node", "test"]);
     } catch (err) {
@@ -175,7 +174,7 @@ describe(".exitOverride and error details", () => {
       .allowExcessArguments(false)
       .action(() => {});
 
-    let caughtErr;
+    let caughtErr: any;
     try {
       program.parse(["node", "test", "excess"]);
     } catch (err) {
@@ -199,7 +198,7 @@ describe(".exitOverride and error details", () => {
       .allowExcessArguments(false)
       .action(() => {});
 
-    let caughtErr;
+    let caughtErr: any;
     try {
       program.parse(["node", "test", "speak", "excess"]);
     } catch (err) {
@@ -218,11 +217,11 @@ describe(".exitOverride and error details", () => {
   test("when specify --help then throw CommanderError", () => {
     const writeSpy = vi
       .spyOn(process.stdout, "write")
-      .mockImplementation(() => {});
+      .mockImplementation(() => true);
     const program = new commander.Command();
     program.exitOverride();
 
-    let caughtErr;
+    let caughtErr: any;
     try {
       program.parse(["node", "test", "--help"]);
     } catch (err) {
@@ -242,7 +241,7 @@ describe(".exitOverride and error details", () => {
     const program = new commander.Command();
     program.exitOverride().command("compress", "compress description");
 
-    let caughtErr;
+    let caughtErr: any;
     try {
       program.parse(["node", "test"]);
     } catch (err) {
@@ -255,12 +254,12 @@ describe(".exitOverride and error details", () => {
   test("when specify --version then throw CommanderError", () => {
     const stdoutSpy = vi
       .spyOn(process.stdout, "write")
-      .mockImplementation(() => {});
+      .mockImplementation(() => true);
     const myVersion = "1.2.3";
     const program = new commander.Command();
     program.exitOverride().version(myVersion);
 
-    let caughtErr;
+    let caughtErr: any;
     try {
       program.parse(["node", "test", "--version"]);
     } catch (err) {
@@ -275,7 +274,7 @@ describe(".exitOverride and error details", () => {
     expect.hasAssertions();
     const pm = path.join(__dirname, "fixtures/pm");
     const program = new commander.Command();
-    await new Promise((resolve) => {
+    await new Promise<void>((resolve) => {
       program
         .exitOverride((err) => {
           expectCommanderError(
@@ -296,7 +295,7 @@ describe(".exitOverride and error details", () => {
     const program = new commander.Command();
     program.exitOverride().requiredOption(optionFlags, "add pepper");
 
-    let caughtErr;
+    let caughtErr: any;
     try {
       program.parse(["node", "test"]);
     } catch (err) {
@@ -318,7 +317,7 @@ describe(".exitOverride and error details", () => {
       .exitOverride()
       .addOption(new commander.Option(optionFlags).choices(["red", "blue"]));
 
-    let caughtErr;
+    let caughtErr: any;
     try {
       program.parse(["--colour", "green"], { from: "user" });
     } catch (err) {
@@ -340,7 +339,7 @@ describe(".exitOverride and error details", () => {
       .addArgument(new commander.Argument("<shade>").choices(["red", "blue"]))
       .action(() => {});
 
-    let caughtErr;
+    let caughtErr: any;
     try {
       program.parse(["green"], { from: "user" });
     } catch (err) {
@@ -356,14 +355,14 @@ describe(".exitOverride and error details", () => {
   });
 
   test("when custom processing for option throws InvalidArgumentError then catch CommanderError", () => {
-    function justSayNo(value) {
+    function justSayNo(value: string) {
       throw new commander.InvalidArgumentError("NO");
     }
     const optionFlags = "--colour <shade>";
     const program = new commander.Command();
     program.exitOverride().option(optionFlags, "specify shade", justSayNo);
 
-    let caughtErr;
+    let caughtErr: any;
     try {
       program.parse(["--colour", "green"], { from: "user" });
     } catch (err) {
@@ -379,7 +378,7 @@ describe(".exitOverride and error details", () => {
   });
 
   test("when custom processing for argument throws InvalidArgumentError then catch CommanderError", () => {
-    function justSayNo(value) {
+    function justSayNo(value: string) {
       throw new commander.InvalidArgumentError("NO");
     }
     const program = new commander.Command();
@@ -388,7 +387,7 @@ describe(".exitOverride and error details", () => {
       .argument("[n]", "number", justSayNo)
       .action(() => {});
 
-    let caughtErr;
+    let caughtErr: any;
     try {
       program.parse(["green"], { from: "user" });
     } catch (err) {
@@ -410,7 +409,7 @@ describe(".exitOverride and error details", () => {
       .addOption(new commander.Option("--silent"))
       .addOption(new commander.Option("--debug").conflicts(["silent"]));
 
-    let caughtErr;
+    let caughtErr: any;
     try {
       program.parse(["--debug", "--silent"], { from: "user" });
     } catch (err) {
@@ -429,7 +428,7 @@ describe(".exitOverride and error details", () => {
     const program = new commander.Command();
     program.exitOverride();
 
-    let caughtErr;
+    let caughtErr: any;
     try {
       program.error("message");
     } catch (err) {
@@ -441,16 +440,18 @@ describe(".exitOverride and error details", () => {
 });
 
 test("when no override and error then exit(1)", () => {
-  const exitSpy = vi.spyOn(process, "exit").mockImplementation(() => {});
+  const exitSpy = vi.spyOn(process, "exit").mockImplementation(() => { throw new Error("process.exit"); });
   const program = new commander.Command();
   program.configureOutput({ outputError: () => {} });
-  program.parse(["--unknownOption"], { from: "user" });
+  expect(() => {
+    program.parse(["--unknownOption"], { from: "user" });
+  }).toThrow();
   expect(exitSpy).toHaveBeenCalledWith(1);
   exitSpy.mockRestore();
 });
 
 test("when custom processing throws custom error then throw custom error", () => {
-  function justSayNo(value) {
+  function justSayNo(value: string) {
     throw new Error("custom");
   }
   const program = new commander.Command();
@@ -462,3 +463,7 @@ test("when custom processing throws custom error then throw custom error", () =>
     program.parse(["--shade", "green"], { from: "user" });
   }).toThrow("custom");
 });
+
+
+
+

@@ -12,7 +12,7 @@ test("when argument not specified then callback not called", () => {
 });
 
 test("when argument not specified then action argument undefined", () => {
-  let actionValue = "foo";
+  let actionValue: unknown = "foo";
   const program = new commander.Command();
   program.argument("[n]", "number", parseFloat).action((arg) => {
     actionValue = arg;
@@ -31,7 +31,7 @@ test("when custom with starting value and argument not specified then callback n
 
 test("when custom with starting value and argument not specified with action handler then action argument is starting value", () => {
   const startingValue = 1;
-  let actionValue;
+  let actionValue: unknown;
   const program = new commander.Command();
   program.argument("[n]", "number", parseFloat, startingValue).action((arg) => {
     actionValue = arg;
@@ -51,7 +51,7 @@ test("when custom with starting value and argument not specified without action 
 
 test("when default value is defined (without custom processing) and argument not specified with action handler then action argument is default value", () => {
   const defaultValue = 1;
-  let actionValue;
+  let actionValue: unknown;
   const program = new commander.Command();
   program.argument("[n]", "number", defaultValue).action((arg) => {
     actionValue = arg;
@@ -80,7 +80,7 @@ test("when argument specified then callback called with value", () => {
 
 test("when argument specified with action handler then action value is as returned from callback", () => {
   const callbackResult = 2;
-  let actionValue;
+  let actionValue: unknown;
   const program = new commander.Command();
   program
     .argument("[n]", "number", () => {
@@ -148,7 +148,7 @@ test("when variadic argument without action handler then .processedArg has array
 });
 
 test('when parseFloat "1e2" then action argument is 100', () => {
-  let actionValue;
+  let actionValue: unknown;
   const program = new commander.Command();
   program.argument("<number>", "float argument", parseFloat).action((arg) => {
     actionValue = arg;
@@ -166,7 +166,7 @@ test("when defined default value for required argument then throw", () => {
 });
 
 test("when custom processing for argument throws plain error then not CommanderError caught", () => {
-  function justSayNo(value) {
+  function justSayNo(value: string) {
     throw new Error("no no no");
   }
   const program = new commander.Command();
@@ -175,7 +175,7 @@ test("when custom processing for argument throws plain error then not CommanderE
     .argument("[n]", "number", justSayNo)
     .action(() => {});
 
-  let caughtErr;
+  let caughtErr: unknown;
   try {
     program.parse(["green"], { from: "user" });
   } catch (err) {

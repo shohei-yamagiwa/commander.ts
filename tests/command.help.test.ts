@@ -36,7 +36,7 @@ test("when call .help then exit", () => {
   // Optional. Suppress normal output to keep test output clean.
   const writeSpy = vi
     .spyOn(process.stdout, "write")
-    .mockImplementation(() => {});
+    .mockImplementation(() => true);
   const program = new commander.Command();
   program.exitOverride();
   expect(() => {
@@ -49,7 +49,7 @@ test("when specify --help then exit", () => {
   // Optional. Suppress normal output to keep test output clean.
   const writeSpy = vi
     .spyOn(process.stdout, "write")
-    .mockImplementation(() => {});
+    .mockImplementation(() => true);
   const program = new commander.Command();
   program.exitOverride();
   expect(() => {
@@ -62,7 +62,7 @@ test("when call help(cb) then display cb output and exit", () => {
   // Using spy to detect custom output
   const writeSpy = vi
     .spyOn(process.stdout, "write")
-    .mockImplementation(() => {});
+    .mockImplementation(() => true);
   const helpReplacement = "reformatted help";
   const program = new commander.Command();
   program.exitOverride();
@@ -79,7 +79,7 @@ test("when call outputHelp(cb) then display cb output", () => {
   // Using spy to detect custom output
   const writeSpy = vi
     .spyOn(process.stdout, "write")
-    .mockImplementation(() => {});
+    .mockImplementation(() => true);
   const helpReplacement = "reformatted help";
   const program = new commander.Command();
   program.outputHelp((helpInformation) => {
@@ -92,7 +92,7 @@ test("when call outputHelp(cb) then display cb output", () => {
 test("when call deprecated outputHelp(cb) with wrong callback return type then throw", () => {
   const program = new commander.Command();
   expect(() => {
-    program.outputHelp((helpInformation) => 3);
+    program.outputHelp(((helpInformation: string) => 3) as any);
   }).toThrow();
 });
 
@@ -136,7 +136,7 @@ test("when both help flags masked then not displayed in helpInformation", () => 
 test("when call .help then output on stdout", () => {
   const writeSpy = vi
     .spyOn(process.stdout, "write")
-    .mockImplementation(() => {});
+    .mockImplementation(() => true);
   const program = new commander.Command();
   program.exitOverride();
   expect(() => {
@@ -149,7 +149,7 @@ test("when call .help then output on stdout", () => {
 test("when call .help with { error: true } then output on stderr", () => {
   const writeSpy = vi
     .spyOn(process.stderr, "write")
-    .mockImplementation(() => {});
+    .mockImplementation(() => true);
   const program = new commander.Command();
   program.exitOverride();
   expect(() => {
@@ -306,3 +306,4 @@ test("when argument has choices and default then both included in helpInformatio
   const helpInformation = program.helpInformation();
   expect(helpInformation).toMatch('(choices: "red", "blue", default: "red")');
 });
+

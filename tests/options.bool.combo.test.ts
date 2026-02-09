@@ -46,7 +46,7 @@ describe("boolean option combo with no default", () => {
 
 // Flag with default, say from an environment variable.
 
-function createPepperProgramWithDefault(defaultValue) {
+function createPepperProgramWithDefault(defaultValue: unknown) {
   const program = new commander.Command();
   program
     .option("-p, --pepper", "add pepper", defaultValue)

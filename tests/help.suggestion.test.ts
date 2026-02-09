@@ -3,14 +3,14 @@ import { Command, Option } from "../index.ts";
 // Note: setting up shared command configuration in getSuggestion,
 // and looking for possible subcommand 'sub'.
 
-function getSuggestion(program, arg) {
+function getSuggestion(program: Command, arg: string | string[]) {
   let message = "";
   program
     .showSuggestionAfterError() // make sure on
     .exitOverride()
     .configureOutput({
       writeErr: (str) => {
-        message = str;
+        message = String(str);
       },
     });
   // Do the same setup for subcommand.
@@ -56,7 +56,7 @@ test.each([
   ],
 ])(
   "when cli of %s and commands %j then suggest %s because %s",
-  (arg, commandNames, expected) => {
+  (arg, commandNames, expected, _reason) => {
     const program = new Command();
     commandNames.forEach((name) => {
       program.command(name);
@@ -168,7 +168,7 @@ test.each([
   ],
 ])(
   "when cli of %s and options %j then suggest %s because %s",
-  (arg, commandNames, expected) => {
+  (arg, commandNames, expected, _reason) => {
     const program = new Command();
     commandNames.forEach((name) => {
       program.option(name);

@@ -1,15 +1,14 @@
 import * as commander from "../index.ts";
 
 describe("helpOption", () => {
-  let writeSpy;
-  let writeErrorSpy;
-
+  let writeSpy: ReturnType<typeof vi.spyOn>;
+  let writeErrorSpy: ReturnType<typeof vi.spyOn>;
   beforeAll(() => {
     // Optional. Suppress expected output to keep test output clean.
-    writeSpy = vi.spyOn(process.stdout, "write").mockImplementation(() => {});
+    writeSpy = vi.spyOn(process.stdout, "write").mockImplementation(() => true);
     writeErrorSpy = vi
       .spyOn(process.stderr, "write")
-      .mockImplementation(() => {});
+      .mockImplementation(() => true);
   });
 
   afterEach(() => {
@@ -132,3 +131,5 @@ describe("helpOption", () => {
     expect(helpInformation).toMatch("--ASSIST");
   });
 });
+
+

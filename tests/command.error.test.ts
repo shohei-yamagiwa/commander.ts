@@ -1,10 +1,12 @@
 import * as commander from "../index.ts";
 
 test("when error called with message then message displayed on stderr", () => {
-  const exitSpy = vi.spyOn(process, "exit").mockImplementation(() => {});
+  const exitSpy = vi
+    .spyOn(process, "exit")
+    .mockImplementation((() => undefined) as never);
   const stderrSpy = vi
     .spyOn(process.stderr, "write")
-    .mockImplementation(() => {});
+    .mockImplementation(() => true);
 
   const program = new commander.Command();
   const message = "Goodbye";
@@ -16,27 +18,35 @@ test("when error called with message then message displayed on stderr", () => {
 });
 
 test("when error called with no exitCode then process.exit(1)", () => {
-  const exitSpy = vi.spyOn(process, "exit").mockImplementation(() => {});
+  const exitSpy = vi.spyOn(process, "exit").mockImplementation(() => {
+    throw new Error("process.exit");
+  });
 
   const program = new commander.Command();
   program.configureOutput({
     writeErr: () => {},
   });
 
-  program.error("Goodbye");
+  expect(() => {
+    program.error("Goodbye");
+  }).toThrow();
 
   expect(exitSpy).toHaveBeenCalledWith(1);
   exitSpy.mockRestore();
 });
 
 test("when error called with exitCode 2 then process.exit(2)", () => {
-  const exitSpy = vi.spyOn(process, "exit").mockImplementation(() => {});
+  const exitSpy = vi.spyOn(process, "exit").mockImplementation(() => {
+    throw new Error("process.exit");
+  });
 
   const program = new commander.Command();
   program.configureOutput({
     writeErr: () => {},
   });
-  program.error("Goodbye", { exitCode: 2 });
+  expect(() => {
+    program.error("Goodbye", { exitCode: 2 });
+  }).toThrow();
 
   expect(exitSpy).toHaveBeenCalledWith(2);
   exitSpy.mockRestore();
@@ -44,7 +54,7 @@ test("when error called with exitCode 2 then process.exit(2)", () => {
 
 test("when error called with code and exitOverride then throws with code", () => {
   const program = new commander.Command();
-  let errorThrown;
+  let errorThrown: commander.CommanderError | undefined;
   program
     .exitOverride((err) => {
       errorThrown = err;
@@ -58,5 +68,6 @@ test("when error called with code and exitOverride then throws with code", () =>
   expect(() => {
     program.error("Goodbye", { code });
   }).toThrow();
-  expect(errorThrown.code).toEqual(code);
+  expect(errorThrown?.code).toEqual(code);
 });
+

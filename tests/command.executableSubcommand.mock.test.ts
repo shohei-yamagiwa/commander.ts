@@ -5,9 +5,9 @@ import { EventEmitter } from "node:events";
 // Using mock to allow try/catch around what is otherwise out-of-stack error handling.
 // Injecting errors, these are not end-to-end tests.
 
-function makeSystemError(code) {
+function makeSystemError(code: string): Error & { code: string } {
   // We can not make an actual SystemError, but our usage is lightweight so easy to match.
-  const err = new Error();
+  const err = new Error() as Error & { code: string };
   err.code = code;
   return err;
 }
@@ -26,7 +26,7 @@ testOrSkipOnWindows(
     const spawnSpy = vi
       .spyOn(childProcess, "spawn")
       .mockImplementation(() => {
-        return mockProcess;
+        return mockProcess as any;
       });
     const program = new commander.Command();
     program.exitOverride();
@@ -46,7 +46,7 @@ testOrSkipOnWindows(
     const spawnSpy = vi
       .spyOn(childProcess, "spawn")
       .mockImplementation(() => {
-        return mockProcess;
+        return mockProcess as any;
       });
     const program = new commander.Command();
     program.exitOverride();
@@ -64,7 +64,7 @@ test("when subcommand executable fails with other error and exitOverride then re
   // asynchronously in spawned process and client can not catch errors.
   const mockProcess = new EventEmitter();
   const spawnSpy = vi.spyOn(childProcess, "spawn").mockImplementation(() => {
-    return mockProcess;
+    return mockProcess as any;
   });
   const program = new commander.Command();
   program._checkForMissingExecutable = () => {}; // suppress error, call mocked spawn
@@ -73,7 +73,7 @@ test("when subcommand executable fails with other error and exitOverride then re
   });
   program.command("executable", "executable description");
   program.parse(["executable"], { from: "user" });
-  let caughtErr;
+  let caughtErr: any;
   try {
     mockProcess.emit("error", makeSystemError("OTHER"));
   } catch (err) {
@@ -89,9 +89,11 @@ test("when subcommand executable fails with other error then exit", () => {
   // asynchronously in spawned process and client can not catch errors.
   const mockProcess = new EventEmitter();
   const spawnSpy = vi.spyOn(childProcess, "spawn").mockImplementation(() => {
-    return mockProcess;
+    return mockProcess as any;
   });
-  const exitSpy = vi.spyOn(process, "exit").mockImplementation(() => {});
+  const exitSpy = vi
+    .spyOn(process, "exit")
+    .mockImplementation((() => undefined) as never);
   const program = new commander.Command();
   program._checkForMissingExecutable = () => {}; // suppress error, call mocked spawn
   program.command("executable", "executable description");
@@ -101,3 +103,4 @@ test("when subcommand executable fails with other error then exit", () => {
   exitSpy.mockRestore();
   spawnSpy.mockRestore();
 });
+

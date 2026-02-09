@@ -12,8 +12,8 @@ test("when .action called then command passed to action", () => {
 
 test("when .action called then this is set to command", () => {
   const program = new commander.Command();
-  let actionThis;
-  const cmd = program.command("info").action(function () {
+  let actionThis: commander.Command | undefined;
+  const cmd = program.command("info").action(function (this: commander.Command) {
     actionThis = this;
   });
   program.parse(["node", "test", "info"]);
@@ -125,7 +125,7 @@ test("when action is async then can await parseAsync", async () => {
   expect(asyncFinished).toBe(true);
 });
 
-function getTestCases(arg) {
+function getTestCases(arg: string): Array<[string, commander.Command]> {
   const withArguments = new commander.Command().arguments(arg);
   const withArgument = new commander.Command().argument(arg);
   const withAddArgument = new commander.Command().addArgument(

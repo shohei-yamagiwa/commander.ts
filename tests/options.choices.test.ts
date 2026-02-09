@@ -40,7 +40,7 @@ describe("choices parameter is treated as readonly, per TypeScript declaration",
     const original = ["red", "blue", "green"];
     const param = original.slice();
     const option = new commander.Option("--colour <shade>").choices(param);
-    option.argChoices.push("purple");
+    option.argChoices!.push("purple");
     expect(param).toEqual(original);
   });
 

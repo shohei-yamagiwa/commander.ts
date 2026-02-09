@@ -11,6 +11,7 @@ import { Option, DualOptions } from "./option.ts";
 import { suggestSimilar } from "./suggestSimilar.ts";
 
 type OutputConfiguration = {
+  [key: string]: unknown;
   writeOut: (str: string | Buffer) => void;
   writeErr: (str: string | Buffer) => void;
   outputError: (str: string, write: (str: string | Buffer) => void) => void;
@@ -43,8 +44,9 @@ type ActionHandler = (...args: unknown[]) => MaybePromise;
 type HookEvent = "preSubcommand" | "preAction" | "postAction";
 type HookCallback = (
   thisCommand: Command,
-  subCommand?: Command,
+  subCommand: Command,
 ) => MaybePromise;
+type HelpConfiguration = Partial<Help> & Record<string, unknown>;
 type OptionValue =
   | string
   | number
@@ -63,7 +65,7 @@ type HelpOutputContext =
 type HelpTextGenerator = (context: {
   error: boolean;
   command: Command;
-}) => string;
+}) => string | void;
 
 class Command extends EventEmitter {
   [key: string]: unknown;
@@ -105,7 +107,7 @@ class Command extends EventEmitter {
   public _helpOption: Option | null | undefined;
   public _addImplicitHelpCommand: boolean | undefined;
   public _helpCommand: Command | undefined;
-  public _helpConfiguration: Record<string, unknown>;
+  public _helpConfiguration: HelpConfiguration;
   public _helpGroupHeading: string | undefined;
   public _defaultCommandGroup: string | undefined;
   public _defaultOptionGroup: string | undefined;
@@ -311,7 +313,7 @@ class Command extends EventEmitter {
    * @return {Help}
    */
 
-  createHelp(): Help {
+  createHelp(): Help & HelpConfiguration {
     return Object.assign(new Help(), this.configureHelp());
   }
 
@@ -323,11 +325,11 @@ class Command extends EventEmitter {
    * @return {(Command | object)} `this` command for chaining, or stored configuration
    */
 
-  configureHelp(): Record<string, unknown>;
-  configureHelp(configuration: Record<string, unknown>): Command;
+  configureHelp(): HelpConfiguration;
+  configureHelp(configuration: HelpConfiguration): Command;
   configureHelp(
-    configuration?: Record<string, unknown>,
-  ): Command | Record<string, unknown> {
+    configuration?: HelpConfiguration,
+  ): Command | HelpConfiguration {
     if (configuration === undefined) return this._helpConfiguration;
 
     this._helpConfiguration = configuration;
@@ -456,6 +458,11 @@ class Command extends EventEmitter {
   argument(
     name: string,
     description: string | undefined,
+    defaultValue: unknown,
+  ): Command;
+  argument(
+    name: string,
+    description: string | undefined,
     parseArg: ParseArg,
     defaultValue?: unknown,
   ): Command;
@@ -578,7 +585,7 @@ class Command extends EventEmitter {
    * @return {Command} `this` command for chaining
    */
   addHelpCommand(
-    helpCommand: Command | string | boolean,
+    helpCommand?: Command | string | boolean,
     deprecatedDescription?: string,
   ): Command {
     // If not passed an object, call through to helpCommand for backwards compatibility,
@@ -624,20 +631,24 @@ class Command extends EventEmitter {
    * @return {Command} `this` command for chaining
    */
 
-  hook(event: HookEvent, listener: HookCallback): Command {
+  hook(event: "preSubcommand", listener: HookCallback): Command;
+  hook(event: "preAction" | "postAction", listener: HookCallback): Command;
+  hook(event: string, listener: HookCallback): Command;
+  hook(event: string, listener: HookCallback): Command {
     const allowedValues: HookEvent[] = [
       "preSubcommand",
       "preAction",
       "postAction",
     ];
-    if (!allowedValues.includes(event)) {
+    if (!allowedValues.includes(event as HookEvent)) {
       throw new Error(`Unexpected value for event passed to hook : '${event}'.
 Expecting one of '${allowedValues.join("', '")}'`);
     }
-    if (this._lifeCycleHooks[event]) {
-      this._lifeCycleHooks[event].push(listener);
+    const hookEvent = event as HookEvent;
+    if (this._lifeCycleHooks[hookEvent]) {
+      this._lifeCycleHooks[hookEvent].push(listener);
     } else {
-      this._lifeCycleHooks[event] = [listener];
+      this._lifeCycleHooks[hookEvent] = [listener];
     }
     return this;
   }
@@ -959,6 +970,12 @@ Expecting one of '${allowedValues.join("', '")}'`);
    */
 
   option(flags: string, description?: string): Command;
+  option(option: Option): Command;
+  option(
+    flags: string,
+    description: string | undefined,
+    defaultValue: unknown,
+  ): Command;
   option(
     flags: string,
     description: string | undefined,
@@ -966,7 +983,7 @@ Expecting one of '${allowedValues.join("', '")}'`);
     defaultValue?: unknown,
   ): Command;
   option(
-    flags: string,
+    flags: string | Option,
     description?: string,
     parseArg?: ParseArg | RegExp | unknown,
     defaultValue?: unknown,
@@ -988,6 +1005,12 @@ Expecting one of '${allowedValues.join("', '")}'`);
    */
 
   requiredOption(flags: string, description?: string): Command;
+  requiredOption(option: Option): Command;
+  requiredOption(
+    flags: string,
+    description: string | undefined,
+    defaultValue: unknown,
+  ): Command;
   requiredOption(
     flags: string,
     description: string | undefined,
@@ -995,7 +1018,7 @@ Expecting one of '${allowedValues.join("', '")}'`);
     defaultValue?: unknown,
   ): Command;
   requiredOption(
-    flags: string,
+    flags: string | Option,
     description?: string,
     parseArg?: ParseArg | RegExp | unknown,
     defaultValue?: unknown,

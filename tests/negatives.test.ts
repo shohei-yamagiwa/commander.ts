@@ -1,7 +1,7 @@
 import { Command } from "../index.ts";
 
 // boolean is whether is a consumable argument when negative numbers allowed
-const negativeNumbers = [
+const negativeNumbers: Array<[string, boolean]> = [
   ["-.1", true],
   ["-123", true],
   ["-123.45", true],
@@ -218,12 +218,12 @@ test("when program has digit option then negatives not allowed in leaf command",
     .exitOverride()
     .configureOutput({ writeErr: () => {} })
     .option("-2", "double option");
-  let leafArgs;
+  let leafArgs: string[] | undefined;
   program
     .command("leaf")
     .argument("[value...]")
     .action((args) => {
-      leafArgs = args;
+      leafArgs = args as string[];
     });
   const args = ["leaf", "-1"];
   expect(() => program.parse(args, { from: "user" })).toThrow();
@@ -231,12 +231,12 @@ test("when program has digit option then negatives not allowed in leaf command",
 
 test("when default command without digit option then negatives accepted", () => {
   const program = new Command();
-  let leafArgs;
+  let leafArgs: string[] | undefined;
   program
     .command("leaf", { isDefault: true })
     .argument("[value...]")
     .action((args) => {
-      leafArgs = args;
+      leafArgs = args as string[];
     });
   program.parse(["-1"], { from: "user" });
   expect(leafArgs).toEqual(["-1"]);

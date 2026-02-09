@@ -1,13 +1,13 @@
 import { Command } from "../index.ts";
 
-function red(str) {
+function red(str: string) {
   // Use plain characters so not stripped in vi failure messages. (Means displayWidth is bogus though.)
   return `RED ${str} DER`;
 }
-function stripRed(str) {
+function stripRed(str: string) {
   return str.replace(/RED /g, "").replace(/ DER/g, "");
 }
-function displayWidth(str) {
+function displayWidth(str: string) {
   // Not really zero width for the "color", but pretend so spacing matches no-color output.
   return stripRed(str).length;
 }
@@ -33,7 +33,7 @@ describe("override style methods and check help information", () => {
 
   test("styleTitle", () => {
     const program = makeProgram();
-    program.configureHelp({ styleTitle: (str) => red(str) }, displayWidth);
+    program.configureHelp({ styleTitle: (str) => red(str), displayWidth });
     const helpText = program.helpInformation();
     expect(helpText).toEqual(
       plainHelpInformation
@@ -229,9 +229,9 @@ describe("override style methods and check help information", () => {
 });
 
 describe("check styles with configureOutput overrides for color", () => {
-  function makeProgram(hasColors) {
+  function makeProgram(hasColors: boolean) {
     const program = new Command("program");
-    program.myHelpText = [];
+    (program as any).myHelpText = [];
     program
       .description("program description")
       .argument("<file>", "arg description")
@@ -239,7 +239,7 @@ describe("check styles with configureOutput overrides for color", () => {
         getOutHasColors: () => hasColors,
         stripColor: (str) => stripRed(str),
         writeOut: (str) => {
-          program.myHelpText.push(str);
+          (program as any).myHelpText.push(str);
         },
       });
     program.configureHelp({
@@ -253,14 +253,14 @@ describe("check styles with configureOutput overrides for color", () => {
   test("when getOutHasColors returns true then help has color", () => {
     const program = makeProgram(true);
     program.outputHelp();
-    const helpText = program.myHelpText.join("");
+    const helpText = ((program as any).myHelpText as string[]).join("");
     expect(helpText).toMatch(red("program"));
   });
 
   test("when getOutHasColors returns false then help does not have color", () => {
     const program = makeProgram(false);
     program.outputHelp();
-    const helpText = program.myHelpText.join("");
+    const helpText = ((program as any).myHelpText as string[]).join("");
     expect(helpText).not.toMatch(red("program"));
   });
 

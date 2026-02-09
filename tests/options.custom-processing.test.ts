@@ -1,19 +1,19 @@
 import * as commander from "../index.ts";
 
-function myParseInt(value, dummyPrevious) {
+function myParseInt(value: string, dummyPrevious: unknown) {
   // parseInt takes a string and a radix
   return parseInt(value, 10);
 }
 
-function increaseVerbosity(dummyValue, previous) {
-  return previous + 1;
+function increaseVerbosity(dummyValue: string, previous: unknown) {
+  return (previous as number) + 1;
 }
 
-function collect(value, previous) {
-  return previous.concat([value]);
+function collect(value: string, previous: unknown) {
+  return (previous as string[]).concat([value]);
 }
 
-function commaSeparatedList(value, dummyPrevious) {
+function commaSeparatedList(value: string, dummyPrevious: unknown) {
   return value.split(",");
 }
 

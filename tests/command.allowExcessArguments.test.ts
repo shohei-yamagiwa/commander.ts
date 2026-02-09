@@ -5,7 +5,7 @@ import * as commander from "../index.ts";
 describe.each([true, false])(
   "allowExcessArguments when action handler: %s",
   (hasActionHandler) => {
-    function configureCommand(cmd) {
+    function configureCommand(cmd: commander.Command) {
       cmd.exitOverride().configureOutput({
         writeErr: () => {},
       });

@@ -87,7 +87,7 @@ test.each(getSingleArgCases("[optional...]"))(
   },
 );
 
-function getSingleArgCases(arg) {
+function getSingleArgCases(arg: string): Array<[string, commander.Command]> {
   return [
     [".arguments", new commander.Command().arguments(arg)],
     [".argument", new commander.Command().argument(arg)],
@@ -109,7 +109,10 @@ test.each(getMultipleArgCases("<first>", "[second]"))(
   },
 );
 
-function getMultipleArgCases(arg1, arg2) {
+function getMultipleArgCases(
+  arg1: string,
+  arg2: string,
+): Array<[string, commander.Command]> {
   return [
     [".arguments", new commander.Command().arguments(`${arg1} ${arg2}`)],
     [".argument", new commander.Command().argument(arg1).argument(arg2)],
