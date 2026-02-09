@@ -5,6 +5,7 @@
   "author": "shohei-yamagiwa, TJ Holowaychuk <tj@vision-media.ca> (Original author of commander.js)",
   "license": "MIT",
   "type": "module",
+  "main": "./index.cjs",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/shohei-yamagiwa/commander.ts.git"
