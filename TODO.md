@@ -1,0 +1,3 @@
+- [ ] `fixtures` のTypeScript移行
+- [ ] `fixtures-extensions` のTypeScript移行
+- [ ] プロジェクト全体のTypeScript移行を完了し、JSファイル数を0にする
