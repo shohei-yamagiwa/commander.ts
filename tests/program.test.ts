@@ -15,7 +15,7 @@ import {
 // Do some testing of the default export(s).
 // Similar tests to ts-imports.test.ts and esm-imports-test.js.
 
-/* eslint jest/expect-expect: ["error", { "assertFunctionNames": ["expect", "checkClass"] }] */
+/* eslint vitest/expect-expect: ["error", { "assertFunctionNames": ["expect", "checkClass"] }] */
 
 function checkClass(obj: object, name: string) {
   expect(typeof obj).toEqual("object");
@@ -66,3 +66,4 @@ test("createOption", () => {
 test("createArgument", () => {
   checkClass(createArgument("<foo>", "description"), "Argument");
 });
+

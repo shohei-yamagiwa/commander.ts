@@ -115,8 +115,10 @@ test("when showHelpAfterError() and error and then shows full help", () => {
 
   try {
     program.parse(["--unknown-option"], { from: "user" });
-  } catch (err) {
+  } catch {
     /* empty */
   }
   expect(writeMock).toHaveBeenLastCalledWith(program.helpInformation());
 });
+
+

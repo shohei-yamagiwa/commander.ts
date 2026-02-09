@@ -12,12 +12,10 @@ test("when .action called then command passed to action", () => {
 
 test("when .action called then this is set to command", () => {
   const program = new commander.Command();
-  let actionThis: commander.Command | undefined;
-  const cmd = program.command("info").action(function (this: commander.Command) {
-    actionThis = this;
+  const command = program.command("info").action(function (this: commander.Command) {
+    expect(this).toBe(command);
   });
   program.parse(["node", "test", "info"]);
-  expect(actionThis).toBe(cmd);
 });
 
 test("when .action called then program.args only contains args", () => {
@@ -137,3 +135,4 @@ function getTestCases(arg: string): Array<[string, commander.Command]> {
     [".addArgument", withAddArgument],
   ];
 }
+

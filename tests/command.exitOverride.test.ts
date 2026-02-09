@@ -10,10 +10,18 @@ import * as path from "node:path";
 // semver minor versions. For now, also testing the error.message and that output occurred
 // to detect accidental changes in behaviour.
 
-/* eslint jest/expect-expect: ["error", { "assertFunctionNames": ["expect", "expectCommanderError"] }] */
+/* eslint vitest/expect-expect: ["error", { "assertFunctionNames": ["expect", "expectCommanderError"] }] */
 
-function expectCommanderError(err: any, exitCode: number, code: string, message: string) {
+function expectCommanderError(
+  err: unknown,
+  exitCode: number,
+  code: string,
+  message: string,
+) {
   expect(err).toBeInstanceOf(commander.CommanderError);
+  if (!(err instanceof commander.CommanderError)) {
+    return;
+  }
   expect(err.exitCode).toBe(exitCode);
   expect(err.code).toBe(code);
   expect(err.message).toBe(message);
@@ -40,7 +48,7 @@ describe(".exitOverride and error details", () => {
     const program = new commander.Command();
     program.exitOverride();
 
-    let caughtErr: any;
+    let caughtErr: unknown;
     try {
       program.parse(["node", "test", "-m"]);
     } catch (err) {
@@ -60,7 +68,7 @@ describe(".exitOverride and error details", () => {
     const program = new commander.Command();
     program.name("prog").exitOverride().command("sub");
 
-    let caughtErr: any;
+    let caughtErr: unknown;
     try {
       program.parse(["node", "test", "oops"]);
     } catch (err) {
@@ -84,11 +92,11 @@ describe(".exitOverride and error details", () => {
       "custom-message",
     );
     const program = new commander.Command();
-    program.exitOverride((_err) => {
+    program.exitOverride(() => {
       throw customError;
     });
 
-    let caughtErr: any;
+    let caughtErr: unknown;
     try {
       program.parse(["node", "test", "-m"]);
     } catch (err) {
@@ -108,7 +116,7 @@ describe(".exitOverride and error details", () => {
     const program = new commander.Command();
     program.exitOverride().option(optionFlags, "add pepper");
 
-    let caughtErr: any;
+    let caughtErr: unknown;
     try {
       program.parse(["node", "test", "--pepper"]);
     } catch (err) {
@@ -131,7 +139,7 @@ describe(".exitOverride and error details", () => {
       .command("compress <arg-name>")
       .action(() => {});
 
-    let caughtErr: any;
+    let caughtErr: unknown;
     try {
       program.parse(["node", "test", "compress"]);
     } catch (err) {
@@ -151,7 +159,7 @@ describe(".exitOverride and error details", () => {
     const program = new commander.Command();
     program.exitOverride().argument("<arg-name>");
 
-    let caughtErr: any;
+    let caughtErr: unknown;
     try {
       program.parse(["node", "test"]);
     } catch (err) {
@@ -174,7 +182,7 @@ describe(".exitOverride and error details", () => {
       .allowExcessArguments(false)
       .action(() => {});
 
-    let caughtErr: any;
+    let caughtErr: unknown;
     try {
       program.parse(["node", "test", "excess"]);
     } catch (err) {
@@ -198,7 +206,7 @@ describe(".exitOverride and error details", () => {
       .allowExcessArguments(false)
       .action(() => {});
 
-    let caughtErr: any;
+    let caughtErr: unknown;
     try {
       program.parse(["node", "test", "speak", "excess"]);
     } catch (err) {
@@ -221,7 +229,7 @@ describe(".exitOverride and error details", () => {
     const program = new commander.Command();
     program.exitOverride();
 
-    let caughtErr: any;
+    let caughtErr: unknown;
     try {
       program.parse(["node", "test", "--help"]);
     } catch (err) {
@@ -241,7 +249,7 @@ describe(".exitOverride and error details", () => {
     const program = new commander.Command();
     program.exitOverride().command("compress", "compress description");
 
-    let caughtErr: any;
+    let caughtErr: unknown;
     try {
       program.parse(["node", "test"]);
     } catch (err) {
@@ -259,7 +267,7 @@ describe(".exitOverride and error details", () => {
     const program = new commander.Command();
     program.exitOverride().version(myVersion);
 
-    let caughtErr: any;
+    let caughtErr: unknown;
     try {
       program.parse(["node", "test", "--version"]);
     } catch (err) {
@@ -295,7 +303,7 @@ describe(".exitOverride and error details", () => {
     const program = new commander.Command();
     program.exitOverride().requiredOption(optionFlags, "add pepper");
 
-    let caughtErr: any;
+    let caughtErr: unknown;
     try {
       program.parse(["node", "test"]);
     } catch (err) {
@@ -317,7 +325,7 @@ describe(".exitOverride and error details", () => {
       .exitOverride()
       .addOption(new commander.Option(optionFlags).choices(["red", "blue"]));
 
-    let caughtErr: any;
+    let caughtErr: unknown;
     try {
       program.parse(["--colour", "green"], { from: "user" });
     } catch (err) {
@@ -339,7 +347,7 @@ describe(".exitOverride and error details", () => {
       .addArgument(new commander.Argument("<shade>").choices(["red", "blue"]))
       .action(() => {});
 
-    let caughtErr: any;
+    let caughtErr: unknown;
     try {
       program.parse(["green"], { from: "user" });
     } catch (err) {
@@ -355,14 +363,14 @@ describe(".exitOverride and error details", () => {
   });
 
   test("when custom processing for option throws InvalidArgumentError then catch CommanderError", () => {
-    function justSayNo(value: string) {
+    function justSayNo() {
       throw new commander.InvalidArgumentError("NO");
     }
     const optionFlags = "--colour <shade>";
     const program = new commander.Command();
     program.exitOverride().option(optionFlags, "specify shade", justSayNo);
 
-    let caughtErr: any;
+    let caughtErr: unknown;
     try {
       program.parse(["--colour", "green"], { from: "user" });
     } catch (err) {
@@ -378,7 +386,7 @@ describe(".exitOverride and error details", () => {
   });
 
   test("when custom processing for argument throws InvalidArgumentError then catch CommanderError", () => {
-    function justSayNo(value: string) {
+    function justSayNo() {
       throw new commander.InvalidArgumentError("NO");
     }
     const program = new commander.Command();
@@ -387,7 +395,7 @@ describe(".exitOverride and error details", () => {
       .argument("[n]", "number", justSayNo)
       .action(() => {});
 
-    let caughtErr: any;
+    let caughtErr: unknown;
     try {
       program.parse(["green"], { from: "user" });
     } catch (err) {
@@ -409,7 +417,7 @@ describe(".exitOverride and error details", () => {
       .addOption(new commander.Option("--silent"))
       .addOption(new commander.Option("--debug").conflicts(["silent"]));
 
-    let caughtErr: any;
+    let caughtErr: unknown;
     try {
       program.parse(["--debug", "--silent"], { from: "user" });
     } catch (err) {
@@ -428,7 +436,7 @@ describe(".exitOverride and error details", () => {
     const program = new commander.Command();
     program.exitOverride();
 
-    let caughtErr: any;
+    let caughtErr: unknown;
     try {
       program.error("message");
     } catch (err) {
@@ -451,7 +459,7 @@ test("when no override and error then exit(1)", () => {
 });
 
 test("when custom processing throws custom error then throw custom error", () => {
-  function justSayNo(value: string) {
+  function justSayNo() {
     throw new Error("custom");
   }
   const program = new commander.Command();
@@ -463,6 +471,9 @@ test("when custom processing throws custom error then throw custom error", () =>
     program.parse(["--shade", "green"], { from: "user" });
   }).toThrow("custom");
 });
+
+
+
 
 
 

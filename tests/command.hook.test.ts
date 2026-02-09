@@ -17,7 +17,7 @@ test("when no action then action hooks not called", () => {
 
 describe("action hooks with synchronous hooks, order", () => {
   test("when hook preAction then hook called before action", () => {
-    const calls: any[] = [];
+    const calls: unknown[] = [];
     const program = new commander.Command();
     program
       .hook("preAction", () => calls.push("before"))
@@ -27,7 +27,7 @@ describe("action hooks with synchronous hooks, order", () => {
   });
 
   test("when hook postAction then hook called after action", () => {
-    const calls: any[] = [];
+    const calls: unknown[] = [];
     const program = new commander.Command();
     program
       .hook("postAction", () => calls.push("after"))
@@ -37,7 +37,7 @@ describe("action hooks with synchronous hooks, order", () => {
   });
 
   test("when hook preAction twice then hooks called FIFO", () => {
-    const calls: any[] = [];
+    const calls: unknown[] = [];
     const program = new commander.Command();
     program
       .hook("preAction", () => calls.push("1"))
@@ -48,7 +48,7 @@ describe("action hooks with synchronous hooks, order", () => {
   });
 
   test("when hook postAction twice then hooks called LIFO", () => {
-    const calls: any[] = [];
+    const calls: unknown[] = [];
     const program = new commander.Command();
     program
       .hook("postAction", () => calls.push("1"))
@@ -59,7 +59,7 @@ describe("action hooks with synchronous hooks, order", () => {
   });
 
   test("when hook preAction at program and sub then hooks called program then sub", () => {
-    const calls: any[] = [];
+    const calls: unknown[] = [];
     const program = new commander.Command();
     program.hook("preAction", () => calls.push("program"));
     program
@@ -71,7 +71,7 @@ describe("action hooks with synchronous hooks, order", () => {
   });
 
   test("when hook postAction at program and sub then hooks called sub then program", () => {
-    const calls: any[] = [];
+    const calls: unknown[] = [];
     const program = new commander.Command();
     program.hook("postAction", () => calls.push("program"));
     program
@@ -83,7 +83,7 @@ describe("action hooks with synchronous hooks, order", () => {
   });
 
   test("when hook everything then hooks called nested", () => {
-    const calls: any[] = [];
+    const calls: unknown[] = [];
     const program = new commander.Command();
     program
       .hook("preAction", () => calls.push("pb1"))
@@ -219,7 +219,7 @@ describe("action hooks context", () => {
 
 describe("action hooks async", () => {
   test("when async preAction then async from preAction", async () => {
-    const calls: any[] = [];
+    const calls: unknown[] = [];
     const program = new commander.Command();
     program
       .hook("preAction", async () => {
@@ -234,7 +234,7 @@ describe("action hooks async", () => {
   });
 
   test("when async postAction then async from postAction", async () => {
-    const calls: any[] = [];
+    const calls: unknown[] = [];
     const program = new commander.Command();
     program
       .hook("postAction", async () => {
@@ -249,7 +249,7 @@ describe("action hooks async", () => {
   });
 
   test("when async action then async from action", async () => {
-    const calls: any[] = [];
+    const calls: unknown[] = [];
     const program = new commander.Command();
     program
       .hook("preAction", () => calls.push("before"))
@@ -265,7 +265,7 @@ describe("action hooks async", () => {
   });
 
   test("when async first preAction then async from first preAction", async () => {
-    const calls: any[] = [];
+    const calls: unknown[] = [];
     const program = new commander.Command();
     program
       .hook("preAction", async () => {
@@ -281,7 +281,7 @@ describe("action hooks async", () => {
   });
 
   test("when async second preAction then async from second preAction", async () => {
-    const calls: any[] = [];
+    const calls: unknown[] = [];
     const program = new commander.Command();
     program
       .hook("preAction", () => calls.push("1"))
@@ -297,7 +297,7 @@ describe("action hooks async", () => {
   });
 
   test("when async hook everything then hooks called nested", async () => {
-    const calls: any[] = [];
+    const calls: unknown[] = [];
     const program = new commander.Command();
     program
       .hook("preAction", async () => {
@@ -338,7 +338,7 @@ describe("action hooks async", () => {
   });
 
   test("preSubcommand hook should work", async () => {
-    const calls: any[] = [];
+    const calls: unknown[] = [];
     const program = new commander.Command();
     program.hook("preSubcommand", async () => {
       await 0;
@@ -358,7 +358,7 @@ describe("action hooks async", () => {
     expect(calls).toEqual([0, 1]);
   });
   test("preSubcommand hook should effective for direct subcommands", async () => {
-    const calls: any[] = [];
+    const calls: unknown[] = [];
     const program = new commander.Command();
     program.hook("preSubcommand", async (thisCommand, subCommand) => {
       await "preSubcommand";
@@ -393,4 +393,5 @@ describe("action hooks async", () => {
     expect(calls).toEqual(["preSubcommand", "first", "third"]);
   });
 });
+
 

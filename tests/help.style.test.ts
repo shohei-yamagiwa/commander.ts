@@ -1,5 +1,7 @@
 import { Command } from "../index.ts";
 
+type CommandWithHelpBuffer = Command & { myHelpText: string[] };
+
 function red(str: string) {
   // Use plain characters so not stripped in vi failure messages. (Means displayWidth is bogus though.)
   return `RED ${str} DER`;
@@ -230,8 +232,8 @@ describe("override style methods and check help information", () => {
 
 describe("check styles with configureOutput overrides for color", () => {
   function makeProgram(hasColors: boolean) {
-    const program = new Command("program");
-    (program as any).myHelpText = [];
+    const program = new Command("program") as CommandWithHelpBuffer;
+    program.myHelpText = [];
     program
       .description("program description")
       .argument("<file>", "arg description")
@@ -239,7 +241,7 @@ describe("check styles with configureOutput overrides for color", () => {
         getOutHasColors: () => hasColors,
         stripColor: (str) => stripRed(str),
         writeOut: (str) => {
-          (program as any).myHelpText.push(str);
+          program.myHelpText.push(typeof str === "string" ? str : str.toString());
         },
       });
     program.configureHelp({
@@ -253,14 +255,14 @@ describe("check styles with configureOutput overrides for color", () => {
   test("when getOutHasColors returns true then help has color", () => {
     const program = makeProgram(true);
     program.outputHelp();
-    const helpText = ((program as any).myHelpText as string[]).join("");
+    const helpText = program.myHelpText.join("");
     expect(helpText).toMatch(red("program"));
   });
 
   test("when getOutHasColors returns false then help does not have color", () => {
     const program = makeProgram(false);
     program.outputHelp();
-    const helpText = ((program as any).myHelpText as string[]).join("");
+    const helpText = program.myHelpText.join("");
     expect(helpText).not.toMatch(red("program"));
   });
 
@@ -278,3 +280,4 @@ describe("check styles with configureOutput overrides for color", () => {
     expect(styleCalled).toBe(true);
   });
 });
+

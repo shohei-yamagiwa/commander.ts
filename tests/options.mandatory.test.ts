@@ -161,13 +161,13 @@ describe("required program option with mandatory value not specified", () => {
 describe("required command option with mandatory value specified", () => {
   test("when command has required value specified then no error and option has specified value", () => {
     const program = new commander.Command();
-    let cmdOptions: any;
+    let cmdOptions: { subby?: string } | undefined;
     program
       .exitOverride()
       .command("sub")
       .requiredOption("--subby <type>", "description")
       .action((options) => {
-        cmdOptions = options;
+        cmdOptions = options as { subby?: string };
       });
 
     program.parse(["node", "test", "sub", "--subby", "blue"]);
@@ -285,6 +285,8 @@ describe("missing mandatory option but help requested", () => {
     expect(caughtErr.code).toEqual("commander.helpDisplayed");
   });
 });
+
+
 
 
 

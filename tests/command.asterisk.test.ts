@@ -23,7 +23,7 @@ describe(".command('*')", () => {
       .action(mockAction);
     try {
       program.parse(["node", "test"]);
-    } catch (err) {
+    } catch {
       /* empty */
     }
     expect(mockAction).not.toHaveBeenCalled();
@@ -140,4 +140,6 @@ describe(".on('command:*')", () => {
     expect(mockAction).toHaveBeenCalled();
   });
 });
+
+
 

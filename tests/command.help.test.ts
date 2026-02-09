@@ -67,7 +67,7 @@ test("when call help(cb) then display cb output and exit", () => {
   const program = new commander.Command();
   program.exitOverride();
   expect(() => {
-    program.help((helpInformation) => {
+    program.help(() => {
       return helpReplacement;
     });
   }).toThrow("(outputHelp)");
@@ -82,7 +82,7 @@ test("when call outputHelp(cb) then display cb output", () => {
     .mockImplementation(() => true);
   const helpReplacement = "reformatted help";
   const program = new commander.Command();
-  program.outputHelp((helpInformation) => {
+  program.outputHelp(() => {
     return helpReplacement;
   });
   expect(writeSpy).toHaveBeenCalledWith(helpReplacement);
@@ -92,7 +92,7 @@ test("when call outputHelp(cb) then display cb output", () => {
 test("when call deprecated outputHelp(cb) with wrong callback return type then throw", () => {
   const program = new commander.Command();
   expect(() => {
-    program.outputHelp(((helpInformation: string) => 3) as any);
+    program.outputHelp(((() => 3) as unknown) as (str: string) => string);
   }).toThrow();
 });
 
@@ -306,4 +306,6 @@ test("when argument has choices and default then both included in helpInformatio
   const helpInformation = program.helpInformation();
   expect(helpInformation).toMatch('(choices: "red", "blue", default: "red")');
 });
+
+
 

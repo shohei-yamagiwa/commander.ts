@@ -1,5 +1,7 @@
 import * as commander from "../index.ts";
 
+type ElectronProcess = NodeJS.Process & { defaultApp?: boolean };
+
 // Testing some Electron conventions but not directly using Electron to avoid overheads.
 // https://github.com/electron/electron/issues/4690#issuecomment-217435222
 // https://www.electronjs.org/docs/api/process#processdefaultapp-readonly
@@ -47,20 +49,22 @@ describe(".parse() args from", () => {
   test('when args from "electron" and not default app then app/args', () => {
     const program = new commander.Command();
     program.argument("[args...]");
-    const hold = (process as any).defaultApp;
-    (process as any).defaultApp = undefined;
+    const electronProcess = process as ElectronProcess;
+    const hold = electronProcess.defaultApp;
+    electronProcess.defaultApp = undefined;
     program.parse("customApp user".split(" "), { from: "electron" });
-    (process as any).defaultApp = hold;
+    electronProcess.defaultApp = hold;
     expect(program.args).toEqual(["user"]);
   });
 
   test('when args from "electron" and default app then app/script/args', () => {
     const program = new commander.Command();
     program.argument("[args...]");
-    const hold = (process as any).defaultApp;
-    (process as any).defaultApp = true;
+    const electronProcess = process as ElectronProcess;
+    const hold = electronProcess.defaultApp;
+    electronProcess.defaultApp = true;
     program.parse("electron script user".split(" "), { from: "electron" });
-    (process as any).defaultApp = hold;
+    electronProcess.defaultApp = hold;
     expect(program.args).toEqual(["user"]);
   });
 
@@ -122,7 +126,8 @@ test("when parse strings instead of array then throw", () => {
   const program = new commander.Command();
   program.argument("[args...]");
   expect(() => {
-    program.parse("node" as any, "test" as any);
+    // @ts-expect-error Intentional invalid call shape for runtime error coverage.
+    program.parse("node", "test");
   }).toThrow();
 });
 
@@ -417,3 +422,4 @@ describe(".parse() called multiple times", () => {
     }).toThrow();
   });
 });
+

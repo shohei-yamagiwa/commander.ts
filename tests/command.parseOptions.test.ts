@@ -20,7 +20,7 @@ describe("regression tests", () => {
     program
       .command("doit [id]")
       .option("--better", "do it better")
-      .action((id, cmd) => {});
+      .action(() => {});
     return program;
   }
 
@@ -332,3 +332,5 @@ describe("Utility Conventions", () => {
     expect(program.opts()).toEqual({ ddd: true, bbb: true });
   });
 });
+
+

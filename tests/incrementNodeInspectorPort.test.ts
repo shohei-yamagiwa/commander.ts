@@ -15,7 +15,7 @@ describe("incrementNodeInspectorPort", () => {
     spawnSpy = vi.spyOn(childProcess, "spawn").mockImplementation(() => {
       return {
         on: () => {},
-      } as any;
+      } as unknown as ReturnType<typeof childProcess.spawn>;
     });
     signalSpy = vi.spyOn(process, "on").mockImplementation(() => process);
   });
@@ -39,7 +39,7 @@ describe("incrementNodeInspectorPort", () => {
     return program;
   }
 
-  function extractMockExecArgs(mock: any) {
+  function extractMockExecArgs(mock: ReturnType<typeof vi.spyOn>) {
     return mock.mock.calls[0][1].slice(0, -1);
   }
 
@@ -139,5 +139,6 @@ describe("incrementNodeInspectorPort", () => {
     expect(execArgs).toEqual(["--frozen-intrinsics "]);
   });
 });
+
 
 

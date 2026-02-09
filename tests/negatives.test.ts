@@ -134,7 +134,7 @@ test.each(negativeNumbers)(
 
 test.each(negativeNumbers)(
   `when digit option defined and option-argument is %s then negative not consumed`,
-  (value, _ignore) => {
+  (value) => {
     const program = new Command();
     program
       .exitOverride()
@@ -149,7 +149,7 @@ test.each(negativeNumbers)(
       thrown = err.code;
     }
 
-    let consume = value[0] !== "-";
+    const consume = value[0] !== "-";
     expect(thrown).toEqual(consume ? "" : "commander.unknownOption");
     expect(program.opts()["optional"]).toBe(consume ? value : true);
   },
@@ -157,7 +157,7 @@ test.each(negativeNumbers)(
 
 test.each(negativeNumbers)(
   `when digit option defined and command-argument is %s then negative not consumed`,
-  (value, _ignore) => {
+  (value) => {
     const program = new Command();
     program
       .exitOverride()
@@ -172,7 +172,7 @@ test.each(negativeNumbers)(
       thrown = err.code;
     }
 
-    let consume = value[0] !== "-";
+    const consume = value[0] !== "-";
     expect(thrown).toEqual(consume ? "" : "commander.unknownOption");
     expect(consume ? program.args : undefined).toEqual(
       consume ? [value] : undefined,
@@ -218,13 +218,10 @@ test("when program has digit option then negatives not allowed in leaf command",
     .exitOverride()
     .configureOutput({ writeErr: () => {} })
     .option("-2", "double option");
-  let leafArgs: string[] | undefined;
   program
     .command("leaf")
     .argument("[value...]")
-    .action((args) => {
-      leafArgs = args as string[];
-    });
+    .action(() => {});
   const args = ["leaf", "-1"];
   expect(() => program.parse(args, { from: "user" })).toThrow();
 });
@@ -265,3 +262,5 @@ test("when program has subcommand and action handler then negative command-argum
   program.command("leaf").action(() => {});
   expect(() => program.parse(["-1"], { from: "user" })).toThrow();
 });
+
+

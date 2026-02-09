@@ -21,7 +21,7 @@ function getSuggestion(program: Command, arg: string | string[]) {
     // Passing in an array for a few of the tests.
     const args = Array.isArray(arg) ? arg : [arg];
     program.parse(args, { from: "user" });
-  } catch (err) {
+  } catch {
     /* empty */
   }
 
@@ -56,7 +56,8 @@ test.each([
   ],
 ])(
   "when cli of %s and commands %j then suggest %s because %s",
-  (arg, commandNames, expected, _reason) => {
+  (arg, commandNames, expected, reason) => {
+    void reason;
     const program = new Command();
     commandNames.forEach((name) => {
       program.command(name);
@@ -168,7 +169,8 @@ test.each([
   ],
 ])(
   "when cli of %s and options %j then suggest %s because %s",
-  (arg, commandNames, expected, _reason) => {
+  (arg, commandNames, expected, reason) => {
+    void reason;
     const program = new Command();
     commandNames.forEach((name) => {
       program.option(name);
@@ -238,3 +240,6 @@ test("when may be duplicate identical candidates then only return one", () => {
   const suggestion = getSuggestion(program, ["sub", "--hepl"]);
   expect(suggestion).toBe("--help");
 });
+
+
+

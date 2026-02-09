@@ -12,9 +12,6 @@ function makeSystemError(code: string): Error & { code: string } {
   return err;
 }
 
-// Suppress false positive warnings due to use of testOrSkipOnWindows
-/* eslint-disable vi/no-standalone-expect */
-
 const testOrSkipOnWindows = process.platform === "win32" ? test.skip : test;
 
 testOrSkipOnWindows(
@@ -26,7 +23,7 @@ testOrSkipOnWindows(
     const spawnSpy = vi
       .spyOn(childProcess, "spawn")
       .mockImplementation(() => {
-        return mockProcess as any;
+        return mockProcess as unknown as ReturnType<typeof childProcess.spawn>;
       });
     const program = new commander.Command();
     program.exitOverride();
@@ -46,7 +43,7 @@ testOrSkipOnWindows(
     const spawnSpy = vi
       .spyOn(childProcess, "spawn")
       .mockImplementation(() => {
-        return mockProcess as any;
+        return mockProcess as unknown as ReturnType<typeof childProcess.spawn>;
       });
     const program = new commander.Command();
     program.exitOverride();
@@ -64,7 +61,7 @@ test("when subcommand executable fails with other error and exitOverride then re
   // asynchronously in spawned process and client can not catch errors.
   const mockProcess = new EventEmitter();
   const spawnSpy = vi.spyOn(childProcess, "spawn").mockImplementation(() => {
-    return mockProcess as any;
+    return mockProcess as unknown as ReturnType<typeof childProcess.spawn>;
   });
   const program = new commander.Command();
   program._checkForMissingExecutable = () => {}; // suppress error, call mocked spawn
@@ -73,14 +70,17 @@ test("when subcommand executable fails with other error and exitOverride then re
   });
   program.command("executable", "executable description");
   program.parse(["executable"], { from: "user" });
-  let caughtErr: any;
+  let caughtErr: unknown;
   try {
     mockProcess.emit("error", makeSystemError("OTHER"));
   } catch (err) {
     caughtErr = err;
   }
-  expect(caughtErr.code).toEqual("commander.executeSubCommandAsync");
-  expect(caughtErr.nestedError.code).toEqual("OTHER");
+  expect(caughtErr).toBeInstanceOf(commander.CommanderError);
+  if (caughtErr instanceof commander.CommanderError) {
+    expect(caughtErr.code).toEqual("commander.executeSubCommandAsync");
+    expect((caughtErr.nestedError as { code?: string }).code).toEqual("OTHER");
+  }
   spawnSpy.mockRestore();
 });
 
@@ -89,7 +89,7 @@ test("when subcommand executable fails with other error then exit", () => {
   // asynchronously in spawned process and client can not catch errors.
   const mockProcess = new EventEmitter();
   const spawnSpy = vi.spyOn(childProcess, "spawn").mockImplementation(() => {
-    return mockProcess as any;
+    return mockProcess as unknown as ReturnType<typeof childProcess.spawn>;
   });
   const exitSpy = vi
     .spyOn(process, "exit")
@@ -103,4 +103,7 @@ test("when subcommand executable fails with other error then exit", () => {
   exitSpy.mockRestore();
   spawnSpy.mockRestore();
 });
+
+
+
 

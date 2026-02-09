@@ -1,6 +1,6 @@
 import * as commander from "../index.ts";
 
-function myParseInt(value: string, dummyPrevious: unknown) {
+function myParseInt(value: string) {
   // parseInt takes a string and a radix
   return parseInt(value, 10);
 }
@@ -13,7 +13,7 @@ function collect(value: string, previous: unknown) {
   return (previous as string[]).concat([value]);
 }
 
-function commaSeparatedList(value: string, dummyPrevious: unknown) {
+function commaSeparatedList(value: string) {
   return value.split(",");
 }
 
@@ -135,3 +135,5 @@ test("when commaSeparatedList x,y,z then value is [x, y, z]", () => {
   program.parse(["node", "test", "--list", "x,y,z"]);
   expect(program.opts().list).toEqual(["x", "y", "z"]);
 });
+
+

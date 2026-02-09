@@ -10,7 +10,7 @@ function getSuggestion(program: Command, arg: string) {
 
   try {
     program.parse([arg], { from: "user" });
-  } catch (err) {
+  } catch {
     /* empty */
   }
 
@@ -49,3 +49,5 @@ test("when unknown option and showSuggestionAfterError(false) then do not show s
   const suggestion = getSuggestion(program, "--exampel");
   expect(suggestion).toBe(null);
 });
+
+

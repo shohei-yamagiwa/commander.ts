@@ -166,7 +166,7 @@ test("when defined default value for required argument then throw", () => {
 });
 
 test("when custom processing for argument throws plain error then not CommanderError caught", () => {
-  function justSayNo(value: string) {
+  function justSayNo() {
     throw new Error("no no no");
   }
   const program = new commander.Command();
@@ -185,3 +185,4 @@ test("when custom processing for argument throws plain error then not CommanderE
   expect(caughtErr).toBeInstanceOf(Error);
   expect(caughtErr).not.toBeInstanceOf(commander.CommanderError);
 });
+

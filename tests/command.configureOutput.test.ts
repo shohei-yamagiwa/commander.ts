@@ -10,7 +10,7 @@ test("when default writeErr() then error on stderr", () => {
 
   try {
     program.parse(["--unknown"], { from: "user" });
-  } catch (err) {
+  } catch {
     /* empty */
   }
 
@@ -28,7 +28,7 @@ test("when custom writeErr() then error on custom output", () => {
 
   try {
     program.parse(["--unknown"], { from: "user" });
-  } catch (err) {
+  } catch {
     /* empty */
   }
 
@@ -366,4 +366,6 @@ describe.each<[ "getOutHasColors" | "getErrHasColors" ]>([
     });
   },
 );
+
+
 

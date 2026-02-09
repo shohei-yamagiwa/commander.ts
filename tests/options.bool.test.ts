@@ -36,52 +36,52 @@ describe("boolean flag on program", () => {
 // boolean flag on command
 describe("boolean flag on command", () => {
   test("when boolean flag not specified then value is undefined", () => {
-    let subCommandOptions: any;
+    let subCommandOptions: { pepper?: boolean } | undefined;
     const program = new commander.Command();
     program
       .command("sub")
       .option("--pepper", "add pepper")
       .action((options) => {
-        subCommandOptions = options;
+        subCommandOptions = options as { pepper?: boolean };
       });
     program.parse(["node", "test", "sub"]);
     expect(subCommandOptions?.pepper).toBeUndefined();
   });
 
   test("when boolean flag specified then value is true", () => {
-    let subCommandOptions: any;
+    let subCommandOptions: { pepper?: boolean } | undefined;
     const program = new commander.Command();
     program
       .command("sub")
       .option("--pepper", "add pepper")
       .action((options) => {
-        subCommandOptions = options;
+        subCommandOptions = options as { pepper?: boolean };
       });
     program.parse(["node", "test", "sub", "--pepper"]);
     expect(subCommandOptions?.pepper).toBe(true);
   });
 
   test("when negatable boolean flag not specified then value is true", () => {
-    let subCommandOptions: any;
+    let subCommandOptions: { cheese?: boolean } | undefined;
     const program = new commander.Command();
     program
       .command("sub")
       .option("--no-cheese", "remove cheese")
       .action((options) => {
-        subCommandOptions = options;
+        subCommandOptions = options as { cheese?: boolean };
       });
     program.parse(["node", "test", "sub"]);
     expect(subCommandOptions?.cheese).toBe(true);
   });
 
   test("when negatable boolean flag specified then value is false", () => {
-    let subCommandOptions: any;
+    let subCommandOptions: { cheese?: boolean } | undefined;
     const program = new commander.Command();
     program
       .command("sub")
       .option("--no-cheese", "remove cheese")
       .action((options) => {
-        subCommandOptions = options;
+        subCommandOptions = options as { cheese?: boolean };
       });
     program.parse(["node", "test", "sub", "--no-cheese"]);
     expect(subCommandOptions?.cheese).toBe(false);
@@ -135,5 +135,7 @@ describe("regression test for -no- in middle of option flag", () => {
     expect(program.opts().moduleNoParse).toEqual(true);
   });
 });
+
+
 
 

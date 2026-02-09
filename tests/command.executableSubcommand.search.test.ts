@@ -12,14 +12,14 @@ import * as commander from "../index.ts";
 
 const gLocalDirectory = path.resolve(__dirname, "fixtures"); // Real directory, although not actually searching for files in it.
 
-function extractMockSpawnArgs(mock: any) {
+function extractMockSpawnArgs(mock: ReturnType<typeof vi.spyOn>) {
   expect(mock).toHaveBeenCalled();
   // non-Win, launchWithNode: childProcess.spawn(process.argv[0], args, { stdio: 'inherit' });
   // Win always: childProcess.spawn(process.execPath, args, { stdio: 'inherit' });
   return mock.mock.calls[0][1];
 }
 
-function extractMockSpawnCommand(mock: any) {
+function extractMockSpawnCommand(mock: ReturnType<typeof vi.spyOn>) {
   expect(mock).toHaveBeenCalled();
   // child_process.spawn(command[, args][, options])
   return mock.mock.calls[0][0];
@@ -36,7 +36,7 @@ describe("search for subcommand", () => {
       return {
         on: () => {},
         killed: true,
-      } as any;
+      } as unknown as ReturnType<typeof childProcess.spawn>;
     });
   });
 
@@ -306,7 +306,7 @@ describe("search for subcommand", () => {
 
   describe("search for local file", () => {
     test("when script arg then search for local script-sub.js, .ts, .tsx, .mpjs, .cjs", () => {
-      existsSpy.mockImplementation((path: string) => false);
+      existsSpy.mockImplementation(() => false);
       const program = new commander.Command();
       program._checkForMissingExecutable = () => {}; // suppress error, call mocked spawn
       program.command("sub", "executable description");
@@ -321,5 +321,6 @@ describe("search for subcommand", () => {
     });
   });
 });
+
 
 
